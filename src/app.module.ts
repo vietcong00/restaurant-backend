@@ -25,6 +25,7 @@ import { ConfigModule } from '@nestjs/config';
 import { GlobalDataService } from './modules/common/services/global-data.service';
 import { BookingModule } from './modules/booking/booking.module';
 import { TableDiagramModule } from './modules/table-diagram/tableDiagram.module';
+import { MenuModule } from './modules/menu/menu.module';
 
 @Module({
     imports: [
@@ -55,6 +56,7 @@ import { TableDiagramModule } from './modules/table-diagram/tableDiagram.module'
         SetttingModule,
         BookingModule,
         TableDiagramModule,
+        MenuModule,
     ],
     controllers: [AppController],
     providers: [GlobalDataService],

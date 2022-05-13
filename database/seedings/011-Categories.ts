@@ -8,6 +8,8 @@ export class SeedingCategory1720963593402 implements MigrationInterface {
         const categories = [
             {
                 name: 'Laptop',
+                priority: 1,
+                note: '123',
                 createdAt: new Date(),
                 updatedAt: new Date(),
                 createdBy: 1,
@@ -15,6 +17,8 @@ export class SeedingCategory1720963593402 implements MigrationInterface {
             },
             {
                 name: 'Kamenrider Heisei 1.0',
+                priority: 2,
+                note: '123',
                 createdAt: new Date(),
                 updatedAt: new Date(),
                 createdBy: 1,
@@ -22,6 +26,8 @@ export class SeedingCategory1720963593402 implements MigrationInterface {
             },
             {
                 name: 'Kamenrider Heisei 2.0',
+                priority: 3,
+                note: '123',
                 createdAt: new Date(),
                 updatedAt: new Date(),
                 createdBy: 1,
@@ -29,41 +35,8 @@ export class SeedingCategory1720963593402 implements MigrationInterface {
             },
             {
                 name: 'Cat',
-                createdAt: new Date(),
-                updatedAt: new Date(),
-                createdBy: 1,
-                updatedBy: 1,
-            },
-            {
-                name: 'Cat 34',
-                createdAt: new Date(),
-                updatedAt: new Date(),
-                createdBy: 1,
-                updatedBy: 1,
-            },
-            {
-                name: 'Dog',
-                createdAt: new Date(),
-                updatedAt: new Date(),
-                createdBy: 1,
-                updatedBy: 1,
-            },
-            {
-                name: 'Dog Yallow',
-                createdAt: new Date(),
-                updatedAt: new Date(),
-                createdBy: 1,
-                updatedBy: 1,
-            },
-            {
-                name: 'pew pew',
-                createdAt: new Date(),
-                updatedAt: new Date(),
-                createdBy: 1,
-                updatedBy: 1,
-            },
-            {
-                name: 'Streamer',
+                priority: 4,
+                note: '123',
                 createdAt: new Date(),
                 updatedAt: new Date(),
                 createdBy: 1,

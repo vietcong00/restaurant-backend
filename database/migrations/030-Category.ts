@@ -21,6 +21,17 @@ export class Booking1632891593030 implements MigrationInterface {
                         isNullable: false,
                     },
                     {
+                        name: 'priority',
+                        type: 'int',
+                        isNullable: true,
+                    },
+                    {
+                        name: 'note',
+                        type: 'varchar',
+                        length: '255',
+                        isNullable: true,
+                    },
+                    {
                         name: 'createdAt',
                         type: 'timestamp',
                         default: 'CURRENT_TIMESTAMP',
