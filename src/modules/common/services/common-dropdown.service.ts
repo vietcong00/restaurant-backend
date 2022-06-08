@@ -4,6 +4,7 @@ import { Brackets, EntityManager, In, Not } from 'typeorm';
 import { DEFAULT_LIMIT_FOR_DROPDOWN } from '../../../common/constants';
 import {
     ListBankDropdown,
+    ListMaterialDropdown,
     ListProvinceDropdown,
     ListRoleDropdown,
     ListUserDropdown,
@@ -19,11 +20,19 @@ import {
 } from '../common.constant';
 import { Province } from 'src/modules/user/entity/province.entity';
 import { UserStatus } from 'src/modules/user/user.constant';
+import { Material } from 'src/modules/material/entity/material.entity';
 
 const userDropdownListAttributes: (keyof User)[] = ['id', 'fullName', 'status'];
 const roleDropdownListAttributes: (keyof Role)[] = ['id', 'name'];
 const bankDropdownListAttributes: (keyof Bank)[] = ['id', 'name', 'code'];
 const provinceDropdownListAttributes: (keyof Province)[] = ['id', 'name'];
+const materialDropdownListAttributes: (keyof Material)[] = [
+    'id',
+    'material',
+    'unit',
+    'quantity',
+];
+
 @Injectable()
 export class CommonDropdownService {
     constructor(
@@ -145,6 +154,31 @@ export class CommonDropdownService {
                 Bank,
                 {
                     select: bankDropdownListAttributes,
+                    where: (queryBuilder) =>
+                        this.generateQueryBuilder(queryBuilder, {
+                            page,
+                            limit,
+                            status: [],
+                            withDeleted: false,
+                        }),
+                },
+            );
+            return {
+                totalItems,
+                items,
+            };
+        } catch (error) {
+            throw new InternalServerErrorException();
+        }
+    }
+
+    async getListMaterial(query: QueryDropdown): Promise<ListMaterialDropdown> {
+        try {
+            const { page, limit } = query;
+            const [items, totalItems] = await this.dbManager.findAndCount(
+                Material,
+                {
+                    select: materialDropdownListAttributes,
                     where: (queryBuilder) =>
                         this.generateQueryBuilder(queryBuilder, {
                             page,

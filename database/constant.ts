@@ -43,6 +43,9 @@ export enum TABLE_NAME {
     Categories = 'categories',
     Foods = 'foods',
     TablesRestaurants = 'tables_restaurants',
+    Suppliers = 'suppliers',
+    Materials = 'materials',
+    ConvertHistories = 'convert_histories',
 }
 
 export const commonColumns: TableColumnOptions[] = [

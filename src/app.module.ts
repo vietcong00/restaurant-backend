@@ -26,6 +26,9 @@ import { GlobalDataService } from './modules/common/services/global-data.service
 import { BookingModule } from './modules/booking/booking.module';
 import { TableDiagramModule } from './modules/table-diagram/tableDiagram.module';
 import { MenuModule } from './modules/menu/menu.module';
+import { SupplierModule } from './modules/supplier/supplier.module';
+import { MaterialModule } from './modules/material/material.module';
+import { ConvertMaterialModule } from './modules/convert-material/convert_material.module';
 
 @Module({
     imports: [
@@ -57,6 +60,9 @@ import { MenuModule } from './modules/menu/menu.module';
         BookingModule,
         TableDiagramModule,
         MenuModule,
+        SupplierModule,
+        MaterialModule,
+        ConvertMaterialModule,
     ],
     controllers: [AppController],
     providers: [GlobalDataService],

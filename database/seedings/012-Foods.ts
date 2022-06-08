@@ -3,7 +3,7 @@ import * as dotenv from 'dotenv';
 import { TABLE_NAME } from '../constant';
 dotenv.config();
 
-export class SeedingFood1720963593403 implements MigrationInterface {
+export class SeedingFood1720963593404 implements MigrationInterface {
     public async up(queryRunner: QueryRunner): Promise<void> {
         const foods = [
             {

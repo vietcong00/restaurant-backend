@@ -13,6 +13,7 @@ import { queryDropdownSchema } from './dto/request/dropdown.dto';
 import { CommonDropdownService } from './services/common-dropdown.service';
 import {
     ListBankDropdown,
+    ListMaterialDropdown,
     ListProvinceDropdown,
     ListRoleDropdown,
     ListUserDropdown,
@@ -108,6 +109,24 @@ export class CommonController {
         try {
             const data: ListBankDropdown =
                 await this.commonDropdownService.getListBank(query);
+            return new SuccessResponse(data);
+        } catch (error) {
+            throw new InternalServerErrorException(error);
+        }
+    }
+
+    @Get('/material')
+    @UseGuards(JwtGuard)
+    async getMaterials(
+        @Query(
+            new RemoveEmptyQueryPipe(),
+            new JoiValidationPipe(queryDropdownSchema),
+        )
+        query: QueryDropdown,
+    ) {
+        try {
+            const data: ListMaterialDropdown =
+                await this.commonDropdownService.getListMaterial(query);
             return new SuccessResponse(data);
         } catch (error) {
             throw new InternalServerErrorException(error);
