@@ -1,11 +1,12 @@
+import { AcceptStatus } from '../../src/modules/export-material-order/export_material_order.constant';
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 import { TABLE_NAME } from '../constant';
 
-export class Material1632891593041 implements MigrationInterface {
+export class ExportMaterialOrder1632891593049 implements MigrationInterface {
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.createTable(
             new Table({
-                name: TABLE_NAME.Materials,
+                name: TABLE_NAME.CheckInventoryDetails,
                 columns: [
                     {
                         name: 'id',
@@ -15,20 +16,35 @@ export class Material1632891593041 implements MigrationInterface {
                         generationStrategy: 'increment',
                     },
                     {
-                        name: 'material',
-                        type: 'varchar',
-                        length: '255',
-                        isNullable: true,
-                    },
-                    {
-                        name: 'unit',
-                        type: 'varchar',
-                        length: '255',
-                        isNullable: true,
-                    },
-                    {
-                        name: 'quantity',
+                        name: 'materialId',
                         type: 'int',
+                        isNullable: true,
+                    },
+                    {
+                        name: 'inventoryQuantity',
+                        type: 'int',
+                        isNullable: true,
+                    },
+                    {
+                        name: 'damagedQuantity',
+                        type: 'int',
+                        isNullable: true,
+                    },
+                    {
+                        name: 'note',
+                        type: 'varchar',
+                        length: '255',
+                        isNullable: true,
+                    },
+                    {
+                        name: 'checkInventoryId',
+                        type: 'int',
+                        isNullable: true,
+                    },
+                    {
+                        name: 'status',
+                        type: 'enum',
+                        enum: Object.values(AcceptStatus),
                         isNullable: true,
                     },
                     {
@@ -67,6 +83,6 @@ export class Material1632891593041 implements MigrationInterface {
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.dropTable(TABLE_NAME.Materials);
+        await queryRunner.dropTable(TABLE_NAME.ExportMaterialOrders);
     }
 }

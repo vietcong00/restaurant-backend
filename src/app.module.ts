@@ -29,6 +29,12 @@ import { MenuModule } from './modules/menu/menu.module';
 import { SupplierModule } from './modules/supplier/supplier.module';
 import { MaterialModule } from './modules/material/material.module';
 import { ConvertMaterialModule } from './modules/convert-material/convert_material.module';
+import { ImportMaterialModule } from './modules/import-material/import_material.module';
+import { ExportMaterialModule } from './modules/export-material/export_material.module';
+import { ImportMaterialOrderModule } from './modules/import-material-order/import_material_order.module';
+import { ExportMaterialOrderModule } from './modules/export-material-order/export_material_order.module';
+import { CheckInventoryModule } from './modules/check-inventory/check_inventory.module';
+import { CheckInventoryDetailModule } from './modules/check-inventory-detail/check_inventory_detail.module';
 
 @Module({
     imports: [
@@ -63,6 +69,12 @@ import { ConvertMaterialModule } from './modules/convert-material/convert_materi
         SupplierModule,
         MaterialModule,
         ConvertMaterialModule,
+        ImportMaterialModule,
+        ExportMaterialModule,
+        ImportMaterialOrderModule,
+        ExportMaterialOrderModule,
+        CheckInventoryModule,
+        CheckInventoryDetailModule,
     ],
     controllers: [AppController],
     providers: [GlobalDataService],

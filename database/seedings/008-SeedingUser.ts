@@ -232,6 +232,7 @@ export class SeedingUser1720963593400 implements MigrationInterface {
                     id: 116,
                     fullName: 'tung nt',
                     email: 'tungnt@tokyotechlab.com',
+                    isSuperAdmin: 1,
                 },
             ];
 

@@ -46,6 +46,12 @@ export enum TABLE_NAME {
     Suppliers = 'suppliers',
     Materials = 'materials',
     ConvertHistories = 'convert_histories',
+    ImportMaterials = 'import_materials',
+    ImportMaterialOrders = 'import_material_orders',
+    ExportMaterials = 'export_materials',
+    ExportMaterialOrders = 'export_material_orders',
+    CheckInventories = 'check_inventories',
+    CheckInventoryDetails = 'check_inventory_details',
 }
 
 export const commonColumns: TableColumnOptions[] = [

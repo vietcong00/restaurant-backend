@@ -1,39 +1,38 @@
 import {
-    Inject,
     Injectable,
-    InternalServerErrorException,
     Optional,
+    Inject,
+    InternalServerErrorException,
 } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
 import { Request } from 'express';
 import { InjectEntityManager } from '@nestjs/typeorm';
-import { ConvertMaterial } from '../entity/convert_material.entity';
 import {
     DEFAULT_FIRST_PAGE,
     DEFAULT_LIMIT_FOR_PAGINATION,
     ORDER_DIRECTION,
 } from 'src/common/constants';
-import { Brackets, EntityManager, Like } from 'typeorm';
-import {
-    ConvertMaterialDetailResponseDto,
-    ConvertMaterialQueryStringDto,
-    CreateConvertMaterialDto,
-} from '../dto/convert_material.dto';
 import { EventOrderBy } from 'src/modules/event/event.constant';
+import { EntityManager, Brackets, Like } from 'typeorm';
+import {
+    CheckInventoryQueryStringDto,
+    CheckInventoryDetailResponseDto,
+    CreateCheckInventoryDto,
+    UpdateCheckInventoryDto,
+} from '../dto/check_inventory.dto';
+import { CheckInventory } from '../entity/check_inventory.entity';
 
-const ConvertMaterialAttribute: (keyof ConvertMaterial)[] = [
+const CheckInventoryAttribute: (keyof CheckInventory)[] = [
     'id',
-    'idMaterialFrom',
-    'quantityBeforeConvertFrom',
-    'quantityFrom',
-    'idMaterialTo',
-    'quantityBeforeConvertTo',
-    'quantityTo',
+    'warehouseStaffId',
+    'status',
     'note',
     'createdAt',
+    'updatedAt',
 ];
+
 @Injectable()
-export class ConvertMaterialService {
+export class CheckInventoryService {
     constructor(
         @Optional() @Inject(REQUEST) private readonly request: Request,
         @InjectEntityManager()
@@ -47,7 +46,7 @@ export class ConvertMaterialService {
                 new Brackets((qb) => {
                     qb.where([
                         {
-                            note: Like(likeKeyword),
+                            material: Like(likeKeyword),
                         },
                     ]);
                 }),
@@ -55,7 +54,7 @@ export class ConvertMaterialService {
         }
     }
 
-    async getConvertHistoryList(query: ConvertMaterialQueryStringDto) {
+    async getCheckInventoryList(query: CheckInventoryQueryStringDto) {
         try {
             const {
                 keyword = '',
@@ -67,9 +66,9 @@ export class ConvertMaterialService {
             const take = +limit || DEFAULT_LIMIT_FOR_PAGINATION;
             const skip = (+page - 1) * take || 0;
             const [items, totalItems] = await this.dbManager.findAndCount(
-                ConvertMaterial,
+                CheckInventory,
                 {
-                    select: ConvertMaterialAttribute,
+                    select: CheckInventoryAttribute,
                     where: (queryBuilder) =>
                         this.generateQueryBuilder(queryBuilder, {
                             keyword,
@@ -77,7 +76,7 @@ export class ConvertMaterialService {
                     order: {
                         [orderBy]: orderDirection.toUpperCase(),
                     },
-                    relations: ['materialTo', 'materialFrom', 'performer'],
+                    relations: ['warehouseStaff'],
                     take,
                     skip,
                 },
@@ -91,38 +90,55 @@ export class ConvertMaterialService {
         }
     }
 
-    async getConvertMaterialDetail(
+    async getCheckInventoryDetail(
         id: number,
-    ): Promise<ConvertMaterialDetailResponseDto> {
+    ): Promise<CheckInventoryDetailResponseDto> {
         try {
-            const convertMaterial = await this.dbManager.findOne(
-                ConvertMaterial,
+            const checkInventory = await this.dbManager.findOne(
+                CheckInventory,
                 {
-                    select: ConvertMaterialAttribute,
+                    select: CheckInventoryAttribute,
                     where: { id },
                 },
             );
-            return convertMaterial;
+            return checkInventory;
         } catch (error) {
             throw error;
         }
     }
 
-    async createConvertMaterial(
-        convertMaterial: CreateConvertMaterialDto,
-    ): Promise<ConvertMaterialDetailResponseDto> {
+    async createCheckInventory(
+        checkInventory: CreateCheckInventoryDto,
+    ): Promise<CheckInventoryDetailResponseDto> {
         try {
-            const insertedConvertMaterial = await this.dbManager
-                .getRepository(ConvertMaterial)
-                .insert(convertMaterial);
-            const convertMaterialId =
-                insertedConvertMaterial?.identifiers[0]?.id;
-            if (convertMaterialId) {
-                const convertMaterialDetail =
-                    await this.getConvertMaterialDetail(convertMaterialId);
-                return convertMaterialDetail;
+            const insertedMaterial = await this.dbManager
+                .getRepository(CheckInventory)
+                .insert(checkInventory);
+            const checkInventoryId = insertedMaterial?.identifiers[0]?.id;
+            if (checkInventoryId) {
+                const checkInventoryDetail = await this.getCheckInventoryDetail(
+                    checkInventoryId,
+                );
+                return checkInventoryDetail;
             }
             throw new InternalServerErrorException();
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async updateCheckInventoryStatus(
+        id: number,
+        updateCheckInventory: UpdateCheckInventoryDto,
+    ) {
+        try {
+            await this.dbManager.update(
+                CheckInventory,
+                id,
+                updateCheckInventory,
+            );
+            const savedMaterial = await this.getCheckInventoryDetail(id);
+            return savedMaterial;
         } catch (error) {
             throw error;
         }

@@ -7,33 +7,33 @@ import {
 import { REQUEST } from '@nestjs/core';
 import { Request } from 'express';
 import { InjectEntityManager } from '@nestjs/typeorm';
-import { ConvertMaterial } from '../entity/convert_material.entity';
+import { ImportMaterial } from '../entity/import_material.entity';
 import {
     DEFAULT_FIRST_PAGE,
     DEFAULT_LIMIT_FOR_PAGINATION,
     ORDER_DIRECTION,
 } from 'src/common/constants';
 import { Brackets, EntityManager, Like } from 'typeorm';
-import {
-    ConvertMaterialDetailResponseDto,
-    ConvertMaterialQueryStringDto,
-    CreateConvertMaterialDto,
-} from '../dto/convert_material.dto';
 import { EventOrderBy } from 'src/modules/event/event.constant';
+import {
+    ImportMaterialQueryStringDto,
+    ImportMaterialDetailResponseDto,
+    CreateImportMaterialDto,
+    UpdateImportMaterialDto,
+} from '../dto/import_material.dto';
 
-const ConvertMaterialAttribute: (keyof ConvertMaterial)[] = [
+const ImportMaterialAttribute: (keyof ImportMaterial)[] = [
     'id',
-    'idMaterialFrom',
-    'quantityBeforeConvertFrom',
-    'quantityFrom',
-    'idMaterialTo',
-    'quantityBeforeConvertTo',
-    'quantityTo',
+    'supplierId',
+    'warehouseStaffId',
+    'totalPaymentImport',
+    'status',
     'note',
     'createdAt',
+    'updatedAt',
 ];
 @Injectable()
-export class ConvertMaterialService {
+export class ImportMaterialService {
     constructor(
         @Optional() @Inject(REQUEST) private readonly request: Request,
         @InjectEntityManager()
@@ -47,7 +47,7 @@ export class ConvertMaterialService {
                 new Brackets((qb) => {
                     qb.where([
                         {
-                            note: Like(likeKeyword),
+                            material: Like(likeKeyword),
                         },
                     ]);
                 }),
@@ -55,7 +55,7 @@ export class ConvertMaterialService {
         }
     }
 
-    async getConvertHistoryList(query: ConvertMaterialQueryStringDto) {
+    async getImportMaterialList(query: ImportMaterialQueryStringDto) {
         try {
             const {
                 keyword = '',
@@ -67,9 +67,9 @@ export class ConvertMaterialService {
             const take = +limit || DEFAULT_LIMIT_FOR_PAGINATION;
             const skip = (+page - 1) * take || 0;
             const [items, totalItems] = await this.dbManager.findAndCount(
-                ConvertMaterial,
+                ImportMaterial,
                 {
-                    select: ConvertMaterialAttribute,
+                    select: ImportMaterialAttribute,
                     where: (queryBuilder) =>
                         this.generateQueryBuilder(queryBuilder, {
                             keyword,
@@ -77,7 +77,7 @@ export class ConvertMaterialService {
                     order: {
                         [orderBy]: orderDirection.toUpperCase(),
                     },
-                    relations: ['materialTo', 'materialFrom', 'performer'],
+                    relations: ['supplier', 'warehouseStaff'],
                     take,
                     skip,
                 },
@@ -91,38 +91,55 @@ export class ConvertMaterialService {
         }
     }
 
-    async getConvertMaterialDetail(
+    async getImportMaterialDetail(
         id: number,
-    ): Promise<ConvertMaterialDetailResponseDto> {
+    ): Promise<ImportMaterialDetailResponseDto> {
         try {
-            const convertMaterial = await this.dbManager.findOne(
-                ConvertMaterial,
+            const importMaterial = await this.dbManager.findOne(
+                ImportMaterial,
                 {
-                    select: ConvertMaterialAttribute,
+                    select: ImportMaterialAttribute,
                     where: { id },
                 },
             );
-            return convertMaterial;
+            return importMaterial;
         } catch (error) {
             throw error;
         }
     }
 
-    async createConvertMaterial(
-        convertMaterial: CreateConvertMaterialDto,
-    ): Promise<ConvertMaterialDetailResponseDto> {
+    async createImportMaterial(
+        importMaterial: CreateImportMaterialDto,
+    ): Promise<ImportMaterialDetailResponseDto> {
         try {
-            const insertedConvertMaterial = await this.dbManager
-                .getRepository(ConvertMaterial)
-                .insert(convertMaterial);
-            const convertMaterialId =
-                insertedConvertMaterial?.identifiers[0]?.id;
-            if (convertMaterialId) {
-                const convertMaterialDetail =
-                    await this.getConvertMaterialDetail(convertMaterialId);
-                return convertMaterialDetail;
+            const insertedMaterial = await this.dbManager
+                .getRepository(ImportMaterial)
+                .insert(importMaterial);
+            const importMaterialId = insertedMaterial?.identifiers[0]?.id;
+            if (importMaterialId) {
+                const importMaterialDetail = await this.getImportMaterialDetail(
+                    importMaterialId,
+                );
+                return importMaterialDetail;
             }
             throw new InternalServerErrorException();
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async updateImportMaterialStatus(
+        id: number,
+        updateImportMaterial: UpdateImportMaterialDto,
+    ) {
+        try {
+            await this.dbManager.update(
+                ImportMaterial,
+                id,
+                updateImportMaterial,
+            );
+            const savedMaterial = await this.getImportMaterialDetail(id);
+            return savedMaterial;
         } catch (error) {
             throw error;
         }

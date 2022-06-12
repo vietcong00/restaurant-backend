@@ -1,39 +1,40 @@
 import {
-    Inject,
     Injectable,
-    InternalServerErrorException,
     Optional,
+    Inject,
+    InternalServerErrorException,
 } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
 import { Request } from 'express';
 import { InjectEntityManager } from '@nestjs/typeorm';
-import { ConvertMaterial } from '../entity/convert_material.entity';
 import {
     DEFAULT_FIRST_PAGE,
     DEFAULT_LIMIT_FOR_PAGINATION,
     ORDER_DIRECTION,
 } from 'src/common/constants';
-import { Brackets, EntityManager, Like } from 'typeorm';
-import {
-    ConvertMaterialDetailResponseDto,
-    ConvertMaterialQueryStringDto,
-    CreateConvertMaterialDto,
-} from '../dto/convert_material.dto';
 import { EventOrderBy } from 'src/modules/event/event.constant';
+import { EntityManager, Brackets, Like } from 'typeorm';
+import {
+    ExportMaterialQueryStringDto,
+    ExportMaterialDetailResponseDto,
+    CreateExportMaterialDto,
+    UpdateExportMaterialDto,
+} from '../dto/export_material.dto';
+import { ExportMaterial } from '../entity/export_material.entity';
 
-const ConvertMaterialAttribute: (keyof ConvertMaterial)[] = [
+const ExportMaterialAttribute: (keyof ExportMaterial)[] = [
     'id',
-    'idMaterialFrom',
-    'quantityBeforeConvertFrom',
-    'quantityFrom',
-    'idMaterialTo',
-    'quantityBeforeConvertTo',
-    'quantityTo',
+    'transporters',
+    'warehouseStaffId',
+    'totalPaymentExport',
+    'status',
     'note',
     'createdAt',
+    'updatedAt',
 ];
+
 @Injectable()
-export class ConvertMaterialService {
+export class ExportMaterialService {
     constructor(
         @Optional() @Inject(REQUEST) private readonly request: Request,
         @InjectEntityManager()
@@ -47,7 +48,7 @@ export class ConvertMaterialService {
                 new Brackets((qb) => {
                     qb.where([
                         {
-                            note: Like(likeKeyword),
+                            material: Like(likeKeyword),
                         },
                     ]);
                 }),
@@ -55,7 +56,7 @@ export class ConvertMaterialService {
         }
     }
 
-    async getConvertHistoryList(query: ConvertMaterialQueryStringDto) {
+    async getExportMaterialList(query: ExportMaterialQueryStringDto) {
         try {
             const {
                 keyword = '',
@@ -67,9 +68,9 @@ export class ConvertMaterialService {
             const take = +limit || DEFAULT_LIMIT_FOR_PAGINATION;
             const skip = (+page - 1) * take || 0;
             const [items, totalItems] = await this.dbManager.findAndCount(
-                ConvertMaterial,
+                ExportMaterial,
                 {
-                    select: ConvertMaterialAttribute,
+                    select: ExportMaterialAttribute,
                     where: (queryBuilder) =>
                         this.generateQueryBuilder(queryBuilder, {
                             keyword,
@@ -77,7 +78,7 @@ export class ConvertMaterialService {
                     order: {
                         [orderBy]: orderDirection.toUpperCase(),
                     },
-                    relations: ['materialTo', 'materialFrom', 'performer'],
+                    relations: ['warehouseStaff'],
                     take,
                     skip,
                 },
@@ -91,38 +92,55 @@ export class ConvertMaterialService {
         }
     }
 
-    async getConvertMaterialDetail(
+    async getExportMaterialDetail(
         id: number,
-    ): Promise<ConvertMaterialDetailResponseDto> {
+    ): Promise<ExportMaterialDetailResponseDto> {
         try {
-            const convertMaterial = await this.dbManager.findOne(
-                ConvertMaterial,
+            const exportMaterial = await this.dbManager.findOne(
+                ExportMaterial,
                 {
-                    select: ConvertMaterialAttribute,
+                    select: ExportMaterialAttribute,
                     where: { id },
                 },
             );
-            return convertMaterial;
+            return exportMaterial;
         } catch (error) {
             throw error;
         }
     }
 
-    async createConvertMaterial(
-        convertMaterial: CreateConvertMaterialDto,
-    ): Promise<ConvertMaterialDetailResponseDto> {
+    async createExportMaterial(
+        exportMaterial: CreateExportMaterialDto,
+    ): Promise<ExportMaterialDetailResponseDto> {
         try {
-            const insertedConvertMaterial = await this.dbManager
-                .getRepository(ConvertMaterial)
-                .insert(convertMaterial);
-            const convertMaterialId =
-                insertedConvertMaterial?.identifiers[0]?.id;
-            if (convertMaterialId) {
-                const convertMaterialDetail =
-                    await this.getConvertMaterialDetail(convertMaterialId);
-                return convertMaterialDetail;
+            const insertedMaterial = await this.dbManager
+                .getRepository(ExportMaterial)
+                .insert(exportMaterial);
+            const exportMaterialId = insertedMaterial?.identifiers[0]?.id;
+            if (exportMaterialId) {
+                const exportMaterialDetail = await this.getExportMaterialDetail(
+                    exportMaterialId,
+                );
+                return exportMaterialDetail;
             }
             throw new InternalServerErrorException();
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async updateExportMaterialStatus(
+        id: number,
+        updateExportMaterial: UpdateExportMaterialDto,
+    ) {
+        try {
+            await this.dbManager.update(
+                ExportMaterial,
+                id,
+                updateExportMaterial,
+            );
+            const savedMaterial = await this.getExportMaterialDetail(id);
+            return savedMaterial;
         } catch (error) {
             throw error;
         }
