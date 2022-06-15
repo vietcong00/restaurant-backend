@@ -11,6 +11,7 @@ import {
 import { Brackets, EntityManager, In, Like } from 'typeorm';
 import { Booking } from '../entity/booking.entity';
 import { BookingListQueryStringDto } from '../dto/requests/list-booking.dto';
+import { BookingStatus } from '../booking.constant';
 
 const bookingAttributes: (keyof Booking)[] = [
     'id',
@@ -27,7 +28,10 @@ const bookingAttributes: (keyof Booking)[] = [
 export class BookingService {
     constructor(private readonly dbManager: EntityManager) {}
 
-    generateQueryBuilder(queryBuilder, { keyword, status, arrivalTimeRange }) {
+    generateQueryBuilder(
+        queryBuilder,
+        { keyword, status, arrivalTimeRange, idTable },
+    ) {
         if (keyword) {
             const likeKeyword = `%${keyword}%`;
             queryBuilder.andWhere(
@@ -47,6 +51,12 @@ export class BookingService {
         if (status && status.length > 0) {
             queryBuilder.andWhere({
                 status: In(status),
+            });
+        }
+
+        if (idTable) {
+            queryBuilder.andWhere({
+                idTable: idTable,
             });
         }
 
@@ -75,6 +85,7 @@ export class BookingService {
                 orderDirection = DEFAULT_ORDER_DIRECTION,
                 status = [],
                 arrivalTimeRange = [],
+                idTable = null,
             } = query;
 
             // Pagination
@@ -91,6 +102,7 @@ export class BookingService {
                             keyword,
                             status,
                             arrivalTimeRange,
+                            idTable,
                         }),
                     order: {
                         [orderBy]: orderDirection.toUpperCase(),
@@ -116,6 +128,18 @@ export class BookingService {
                 where: { id },
             });
             return booking;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async checkExistBookingWaitingInTable(idTable: number): Promise<boolean> {
+        try {
+            const count = await this.dbManager.count(Booking, {
+                select: bookingAttributes,
+                where: { idTable, status: BookingStatus.WAITING },
+            });
+            return count > 1;
         } catch (error) {
             throw error;
         }

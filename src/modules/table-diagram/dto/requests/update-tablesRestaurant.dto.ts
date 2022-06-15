@@ -1,3 +1,4 @@
+import { TableStatus } from './../../tableDiagram.constant';
 import * as BaseJoi from 'joi';
 import JoiDate from '@joi/date';
 const Joi = BaseJoi.extend(JoiDate);
@@ -9,7 +10,8 @@ export const UpdateTableSchema = Joi.object().keys({
 });
 
 export interface UpdateTableDto {
-    name: string;
-    numberPeople: number;
-    updatedBy: number;
+    name?: string;
+    numberPeople?: number;
+    updatedBy?: number;
+    status?: TableStatus;
 }

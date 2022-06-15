@@ -39,7 +39,6 @@ export const BookingSchema = {
         .label('booking.fields.status'),
     nameCustomer: Joi.string()
         .max(INPUT_TEXT_MAX_LENGTH)
-        .required()
         .label('billing.fields.name'),
     phone: Joi.string()
         .allow(null)
@@ -58,6 +57,5 @@ export const BookingSchema = {
     numberPeople: Joi.number()
         .positive()
         .max(MAX_INTEGER)
-        .required()
         .label('user.fields.role'),
 };

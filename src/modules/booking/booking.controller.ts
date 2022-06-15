@@ -1,3 +1,5 @@
+import { TableDiagramService } from './../table-diagram/services/tableDiagram.service';
+import { BookingStatus, TableStatus } from './booking.constant';
 import {
     UpdateBookingSchema,
     UpdateBookingDto,
@@ -35,19 +37,10 @@ import {
     BookingListQueryStringSchema,
 } from './dto/requests/list-booking.dto';
 import { Booking } from './entity/booking.entity';
-import {
-    AuthorizationGuard,
-    Permissions,
-} from 'src/common/guards/authorization.guard';
-import {
-    PermissionResources,
-    PermissionActions,
-} from 'src/modules/role/role.constants';
+import { AuthorizationGuard } from 'src/common/guards/authorization.guard';
 import { HttpStatus } from 'src/common/constants';
 import { RemoveEmptyQueryPipe } from 'src/common/pipes/remove.empty.query.pipe';
-import { User } from '../user/entity/user.entity';
 import { TrimObjectPipe } from 'src/common/pipes/trim.object.pipe';
-import { UserStatus } from '../user/user.constant';
 
 @Controller({
     path: 'booking',
@@ -56,6 +49,7 @@ import { UserStatus } from '../user/user.constant';
 export class BookingController {
     constructor(
         private readonly bookingService: BookingService,
+        private readonly tableDiagramService: TableDiagramService,
         private readonly databaseService: DatabaseService,
         private readonly i18n: I18nRequestScopeService,
     ) {}
@@ -142,7 +136,37 @@ export class BookingController {
                     message,
                     [],
                 );
+            } else {
+                if (body.status || body.status === BookingStatus.CANCELED) {
+                    if (
+                        this.bookingService.checkExistBookingWaitingInTable(
+                            oldBooking.idTable,
+                        )
+                    ) {
+                        this.tableDiagramService.updateTable(
+                            oldBooking.idTable,
+                            { status: TableStatus.BOOKED },
+                        );
+                    } else {
+                        this.tableDiagramService.updateTable(
+                            oldBooking.idTable,
+                            { status: TableStatus.READY },
+                        );
+                    }
+                } else if (body.status || body.status === BookingStatus.DONE) {
+                    this.tableDiagramService.updateTable(oldBooking.idTable, {
+                        status: TableStatus.USED,
+                    });
+                } else {
+                    this.tableDiagramService.updateTable(oldBooking.idTable, {
+                        status: TableStatus.BOOKED,
+                    });
+                }
             }
+            this.tableDiagramService.updateTable(body.idTable, {
+                status: TableStatus.BOOKED,
+            });
+
             body.updatedBy = req.loginUser.id;
             const updatedBooking = await this.bookingService.updateBooking(
                 id,
