@@ -6,10 +6,12 @@ import {
     DEFAULT_ORDER_DIRECTION,
 } from 'src/common/constants';
 import { Brackets, EntityManager, Like } from 'typeorm';
-import { CreateCategoryDto } from '../dto/requests/create-category.dto';
-import { CategoryListQueryStringDto } from '../dto/requests/list-category.dto';
-import { UpdateCategoryDto } from '../dto/requests/category-category.dto';
-import { CategoryResponseDto } from '../dto/responses/category-response.dto';
+import {
+    categoryDetailResponseDto,
+    CategoryListQueryStringDto,
+    CreateCategoryDto,
+    UpdateCategoryDto,
+} from '../dto/category.dto';
 import { Category } from '../entity/category.entity';
 
 const categoryAttributes: (keyof Category)[] = [
@@ -80,7 +82,7 @@ export class CategoryService {
         }
     }
 
-    async getCategoryDetail(id: number): Promise<CategoryResponseDto> {
+    async getCategoryDetail(id: number): Promise<categoryDetailResponseDto> {
         try {
             const category = await this.dbManager.findOne(Category, {
                 select: categoryAttributes,

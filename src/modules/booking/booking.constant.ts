@@ -10,6 +10,8 @@ import {
 
 const Joi = BaseJoi.extend(JoiDate);
 
+export const MODULE_NAME = 'booking';
+
 export enum BillingOrderBy {
     NAME = 'name',
     CREATED_AT = 'createdAt',
@@ -39,23 +41,22 @@ export const BookingSchema = {
         .label('booking.fields.status'),
     nameCustomer: Joi.string()
         .max(INPUT_TEXT_MAX_LENGTH)
-        .label('billing.fields.name'),
+        .label('booking.fields.nameCustomer'),
     phone: Joi.string()
         .allow(null)
         .regex(RegExp(REGEX.PHONE_NUMBER))
         .max(INPUT_PHONE_MAX_LENGTH)
         .optional()
-        .label('user.fields.phoneNumber'),
+        .label('booking.fields.phone'),
     idTable: Joi.number()
         .positive()
         .max(MAX_INTEGER)
-        .required()
-        .label('user.fields.role'),
+        .label('booking.fields.idTable'),
     arrivalTime: Joi.date()
-        .format(DATE_TIME_FORMAT.YYYY_MM_DD_HYPHEN_HH_MM_SS_COLON)
-        .label('recruitment.fields.candidateInterview.dateTime'),
+        .format(DATE_TIME_FORMAT.YYYY_MM_DD_HYPHEN_HH_MM_COLON)
+        .label('booking.fields.arrivalTime'),
     numberPeople: Joi.number()
         .positive()
         .max(MAX_INTEGER)
-        .label('user.fields.role'),
+        .label('booking.fields.numberPeople'),
 };

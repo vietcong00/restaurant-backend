@@ -8,4 +8,4 @@ import { CategoryController } from './category.controller';
     providers: [CategoryService, DatabaseService],
     controllers: [CategoryController],
 })
-export class MenuModule {}
+export class CategoryModule {}

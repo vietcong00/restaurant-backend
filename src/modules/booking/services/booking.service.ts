@@ -136,10 +136,9 @@ export class BookingService {
     async checkExistBookingWaitingInTable(idTable: number): Promise<boolean> {
         try {
             const count = await this.dbManager.count(Booking, {
-                select: bookingAttributes,
                 where: { idTable, status: BookingStatus.WAITING },
             });
-            return count > 1;
+            return count > 0;
         } catch (error) {
             throw error;
         }

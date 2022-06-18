@@ -33,23 +33,17 @@ import {
 } from 'src/modules/role/role.constants';
 import { HttpStatus } from 'src/common/constants';
 import { RemoveEmptyQueryPipe } from 'src/common/pipes/remove.empty.query.pipe';
-import { User } from '../user/entity/user.entity';
 import { TrimObjectPipe } from 'src/common/pipes/trim.object.pipe';
-import { UserStatus } from '../user/user.constant';
-import { BillingService } from '../billing/services/billing.service';
+
+import { CategoryService } from './services/category.service';
 import {
-    UpdateCategorySchema,
-    UpdateCategoryDto,
-} from './dto/requests/category-category.dto';
-import {
+    CategoryListQueryStringSchema,
+    CategoryListQueryStringDto,
     CreateCategorySchema,
     CreateCategoryDto,
-} from './dto/requests/create-category.dto';
-import {
-    CategoryListQueryStringDto,
-    CategoryListQueryStringSchema,
-} from './dto/requests/list-category.dto';
-import { CategoryService } from './services/category.service';
+    UpdateCategorySchema,
+    UpdateCategoryDto,
+} from './dto/category.dto';
 
 @Controller({
     path: 'category',

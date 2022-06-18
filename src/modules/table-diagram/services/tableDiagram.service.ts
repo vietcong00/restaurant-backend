@@ -1,3 +1,4 @@
+import { BookingStatus, TableStatus } from './../../booking/booking.constant';
 import { TableDetailResponseDto } from '../dto/responses/tablesRestaurant-response.dto';
 import { UpdateTableDto } from '../dto/requests/update-tablesRestaurant.dto';
 import { CreateTableDto } from '../dto/requests/create-tablesRestaurant.dto';
@@ -130,6 +131,39 @@ export class TableDiagramService {
                 .update({ id }, table);
             const updatedTable = await this.getTableDetail(id);
             return updatedTable;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async updateStatusTableRelativeBooking(
+        idTable: number,
+        bookingStatus: BookingStatus,
+        isExistBookingWaiting: boolean,
+    ) {
+        try {
+            if (bookingStatus === BookingStatus.CANCELED) {
+                if (isExistBookingWaiting) {
+                    this.updateTable(idTable, {
+                        status: TableStatus.BOOKED,
+                    });
+                } else {
+                    this.updateTable(idTable, {
+                        status: TableStatus.READY,
+                    });
+                }
+            } else if (bookingStatus === BookingStatus.DONE) {
+                this.updateTable(idTable, {
+                    status: TableStatus.USED,
+                });
+            } else if (bookingStatus === BookingStatus.WAITING) {
+                const table = await this.getTableDetail(idTable);
+                if (table?.status === TableStatus.READY) {
+                    this.updateTable(idTable, {
+                        status: TableStatus.BOOKED,
+                    });
+                }
+            }
         } catch (error) {
             throw error;
         }

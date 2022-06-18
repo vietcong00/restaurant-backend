@@ -1,3 +1,4 @@
+import { BookingService } from './../booking/services/booking.service';
 import { TableDiagramService } from './services/tableDiagram.service';
 import {
     Controller,
@@ -39,12 +40,14 @@ import { AuthorizationGuard } from 'src/common/guards/authorization.guard';
 import { HttpStatus } from 'src/common/constants';
 import { RemoveEmptyQueryPipe } from 'src/common/pipes/remove.empty.query.pipe';
 import { TrimObjectPipe } from 'src/common/pipes/trim.object.pipe';
+import { TableStatus } from './tableDiagram.constant';
 
 @Controller('table')
 @UseGuards(JwtGuard, AuthorizationGuard)
 export class TableDiagramController {
     constructor(
         private readonly tableDiagramService: TableDiagramService,
+        private readonly bookingService: BookingService,
         private readonly databaseService: DatabaseService,
         private readonly i18n: I18nRequestScopeService,
     ) {}
@@ -135,6 +138,11 @@ export class TableDiagramController {
                 );
             }
             body.updatedBy = req.loginUser.id;
+            const isExistBookingWaiting =
+                await this.bookingService.checkExistBookingWaitingInTable(id);
+            if (body.status === TableStatus.READY && isExistBookingWaiting) {
+                body.status = TableStatus.BOOKED;
+            }
             const updatedTable = await this.tableDiagramService.updateTable(
                 id,
                 body,

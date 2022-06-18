@@ -1,11 +1,11 @@
 {
     "fields": {
         "status": "Status",
-        "name": "Name",
-        "description": "Description",
-        "url": "Link to image",
-        "payDate": "Pay Date",
-        "userId": "userId"            
+        "nameCustomer": "Name Customer",
+        "phone": "Phone",
+        "idTable": "id Table",
+        "arrivalTime": "arrival Time",
+        "numberPeople": "number People"            
     },
     "message": {
         "error": {

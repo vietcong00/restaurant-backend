@@ -101,6 +101,7 @@ export class BookingController {
     ) {
         try {
             body.createdBy = req.loginUser.id;
+            body.status = BookingStatus.WAITING;
             const newBooking = await this.bookingService.createBooking(body);
             await this.databaseService.recordUserLogging({
                 userId: req.loginUser?.id,
@@ -136,42 +137,22 @@ export class BookingController {
                     message,
                     [],
                 );
-            } else {
-                if (body.status || body.status === BookingStatus.CANCELED) {
-                    if (
-                        this.bookingService.checkExistBookingWaitingInTable(
-                            oldBooking.idTable,
-                        )
-                    ) {
-                        this.tableDiagramService.updateTable(
-                            oldBooking.idTable,
-                            { status: TableStatus.BOOKED },
-                        );
-                    } else {
-                        this.tableDiagramService.updateTable(
-                            oldBooking.idTable,
-                            { status: TableStatus.READY },
-                        );
-                    }
-                } else if (body.status || body.status === BookingStatus.DONE) {
-                    this.tableDiagramService.updateTable(oldBooking.idTable, {
-                        status: TableStatus.USED,
-                    });
-                } else {
-                    this.tableDiagramService.updateTable(oldBooking.idTable, {
-                        status: TableStatus.BOOKED,
-                    });
-                }
             }
-            this.tableDiagramService.updateTable(body.idTable, {
-                status: TableStatus.BOOKED,
-            });
-
             body.updatedBy = req.loginUser.id;
             const updatedBooking = await this.bookingService.updateBooking(
                 id,
                 body,
             );
+            const isExistBookingWaiting =
+                await this.bookingService.checkExistBookingWaitingInTable(
+                    updatedBooking.idTable,
+                );
+            this.tableDiagramService.updateStatusTableRelativeBooking(
+                updatedBooking.idTable,
+                updatedBooking.status,
+                isExistBookingWaiting,
+            );
+
             await this.databaseService.recordUserLogging({
                 userId: req.loginUser?.id,
                 route: req.route,

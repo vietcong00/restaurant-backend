@@ -25,7 +25,7 @@ import { ConfigModule } from '@nestjs/config';
 import { GlobalDataService } from './modules/common/services/global-data.service';
 import { BookingModule } from './modules/booking/booking.module';
 import { TableDiagramModule } from './modules/table-diagram/tableDiagram.module';
-import { MenuModule } from './modules/menu/menu.module';
+import { CategoryModule } from './modules/category/category.module';
 import { SupplierModule } from './modules/supplier/supplier.module';
 import { MaterialModule } from './modules/material/material.module';
 import { ConvertMaterialModule } from './modules/convert-material/convert_material.module';
@@ -35,6 +35,7 @@ import { ImportMaterialOrderModule } from './modules/import-material-order/impor
 import { ExportMaterialOrderModule } from './modules/export-material-order/export_material_order.module';
 import { CheckInventoryModule } from './modules/check-inventory/check_inventory.module';
 import { CheckInventoryDetailModule } from './modules/check-inventory-detail/check_inventory_detail.module';
+import { FoodModule } from './modules/food/food.module';
 
 @Module({
     imports: [
@@ -65,7 +66,7 @@ import { CheckInventoryDetailModule } from './modules/check-inventory-detail/che
         SetttingModule,
         BookingModule,
         TableDiagramModule,
-        MenuModule,
+        CategoryModule,
         SupplierModule,
         MaterialModule,
         ConvertMaterialModule,
@@ -75,6 +76,7 @@ import { CheckInventoryDetailModule } from './modules/check-inventory-detail/che
         ExportMaterialOrderModule,
         CheckInventoryModule,
         CheckInventoryDetailModule,
+        FoodModule,
     ],
     controllers: [AppController],
     providers: [GlobalDataService],
