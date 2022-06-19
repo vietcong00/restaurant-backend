@@ -65,6 +65,15 @@ export class UpdateBookingStatusJob {
                         },
                     )
                     .execute();
+            } else {
+                await manager
+                    .createQueryBuilder()
+                    .update(TablesRestaurant)
+                    .set({ status: TableStatus.READY })
+                    .where('status= :status', {
+                        status: TableStatus.BOOKED,
+                    })
+                    .execute();
             }
         } catch (error) {
             this.logger.error('Error in cancelBooking func: ', error);

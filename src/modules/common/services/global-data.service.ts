@@ -83,6 +83,7 @@ export class GlobalDataService {
         permissionList = await this.dbManager
             .getRepository(Permission)
             .find({ select: ['id', 'actionId', 'resourceId'] });
+
         permissionList = permissionList.map((permission) => ({
             ...permission,
             action: actionList.find(

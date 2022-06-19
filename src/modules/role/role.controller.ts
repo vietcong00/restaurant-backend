@@ -78,6 +78,7 @@ export class RoleController {
                             action: permission.action?.content,
                             permissionId: permission.id,
                         }));
+
                     return {
                         actions: actionList,
                         resource: resource.content,
