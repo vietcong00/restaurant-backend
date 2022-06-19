@@ -41,12 +41,7 @@ export class SettingController {
     ) {}
 
     @Get('/')
-    @Permissions([
-        `${PermissionResources.SETTING}_${PermissionActions.READ}`,
-        `${PermissionResources.USER}_${PermissionActions.READ}`,
-        `${PermissionResources.ASSET}_${PermissionActions.READ}`,
-        `${PermissionResources.REQUEST_ASSET}_${PermissionActions.READ}`,
-    ])
+    @Permissions([`${PermissionResources.USER}_${PermissionActions.READ}`])
     async getSetting(
         @Query(
             new RemoveEmptyQueryPipe(),
@@ -66,7 +61,7 @@ export class SettingController {
     }
 
     @Post('/')
-    @Permissions([`${PermissionResources.SETTING}_${PermissionActions.UPDATE}`])
+    @Permissions([`${PermissionResources.USER}_${PermissionActions.UPDATE}`])
     async saveSetting(
         @Body(new TrimObjectPipe(), new JoiValidationPipe(settingSchema))
         data: GeneralSettingDto<GeneralSettingValueDto>,
@@ -79,23 +74,6 @@ export class SettingController {
                 );
                 if (!isValid) {
                     const message = await this.i18n.t('user.position.invalid');
-                    return new ErrorResponse(HttpStatus.BAD_REQUEST, message, [
-                        {
-                            key: 'values',
-                            errorCode: HttpStatus.ITEM_IS_USING,
-                            message: message,
-                        },
-                    ]);
-                }
-            } else if (data.key == SettingKey.ASSET_CATEGORY) {
-                // check if the new asset category is valid
-                const isValid = await this.settingService.validateAssetCategory(
-                    data,
-                );
-                if (!isValid) {
-                    const message = await this.i18n.t(
-                        'asset.message.categoryInUse',
-                    );
                     return new ErrorResponse(HttpStatus.BAD_REQUEST, message, [
                         {
                             key: 'values',

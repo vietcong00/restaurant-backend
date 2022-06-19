@@ -51,7 +51,9 @@ export class CheckInventoryDetailController {
     ) {}
 
     @Get()
-    @Permissions([`${PermissionResources.EVENT}_${PermissionActions.READ}`])
+    @Permissions([
+        `${PermissionResources.STORE_CHECK_INVENTORY}_${PermissionActions.READ}`,
+    ])
     async getCheckInventoryDetails(
         @Query(
             new RemoveEmptyQueryPipe(),
@@ -71,7 +73,9 @@ export class CheckInventoryDetailController {
     }
 
     @Get(':id')
-    @Permissions([`${PermissionResources.EVENT}_${PermissionActions.READ}`])
+    @Permissions([
+        `${PermissionResources.STORE_CHECK_INVENTORY}_${PermissionActions.READ}`,
+    ])
     async getCheckInventoryDetail(@Param('id', ParseIntPipe) id: number) {
         try {
             const material =
@@ -95,7 +99,9 @@ export class CheckInventoryDetailController {
     }
 
     @Post()
-    @Permissions([`${PermissionResources.EVENT}_${PermissionActions.CREATE}`])
+    @Permissions([
+        `${PermissionResources.STORE_CHECK_INVENTORY}_${PermissionActions.CREATE}`,
+    ])
     async createCheckInventoryDetail(
         @Request() req,
         @Body(
@@ -123,7 +129,9 @@ export class CheckInventoryDetailController {
     }
 
     @Patch(':id')
-    @Permissions([`${PermissionResources.EVENT}_${PermissionActions.UPDATE}`])
+    @Permissions([
+        `${PermissionResources.STORE_CHECK_INVENTORY}_${PermissionActions.UPDATE}`,
+    ])
     async updateCheckInventoryDetailStatus(
         @Request() req,
         @Param('id', ParseIntPipe) id: number,

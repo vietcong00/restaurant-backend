@@ -57,7 +57,9 @@ export class CategoryController {
     ) {}
 
     @Get()
-    @Permissions([`${PermissionResources.BILLING}_${PermissionActions.READ}`])
+    @Permissions([
+        `${PermissionResources.MENU_CATEGORY}_${PermissionActions.READ}`,
+    ])
     async getCategories(
         @Query(
             new RemoveEmptyQueryPipe(),
@@ -76,7 +78,9 @@ export class CategoryController {
     }
 
     @Get(':id')
-    @Permissions([`${PermissionResources.BILLING}_${PermissionActions.READ}`])
+    @Permissions([
+        `${PermissionResources.MENU_CATEGORY}_${PermissionActions.READ}`,
+    ])
     async getCategory(@Param('id', ParseIntPipe) id: number) {
         try {
             const category = await this.categoryService.getCategoryDetail(id);
@@ -97,7 +101,9 @@ export class CategoryController {
     }
 
     @Post()
-    @Permissions([`${PermissionResources.BILLING}_${PermissionActions.CREATE}`])
+    @Permissions([
+        `${PermissionResources.MENU_CATEGORY}_${PermissionActions.CREATE}`,
+    ])
     async create(
         @Request() req,
         @Body(new TrimObjectPipe(), new JoiValidationPipe(CreateCategorySchema))
@@ -119,7 +125,9 @@ export class CategoryController {
     }
 
     @Patch(':id')
-    @Permissions([`${PermissionResources.BILLING}_${PermissionActions.UPDATE}`])
+    @Permissions([
+        `${PermissionResources.MENU_CATEGORY}_${PermissionActions.UPDATE}`,
+    ])
     async updateCategory(
         @Request() req,
         @Param('id') id: number,
@@ -159,7 +167,9 @@ export class CategoryController {
     }
 
     @Delete(':id')
-    @Permissions([`${PermissionResources.BILLING}_${PermissionActions.DELETE}`])
+    @Permissions([
+        `${PermissionResources.MENU_CATEGORY}_${PermissionActions.DELETE}`,
+    ])
     async deleteCategory(
         @Request() req,
         @Param('id', ParseIntPipe) id: number,

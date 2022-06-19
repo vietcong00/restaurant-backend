@@ -49,7 +49,9 @@ export class ConvertMaterialController {
     ) {}
 
     @Get()
-    @Permissions([`${PermissionResources.EVENT}_${PermissionActions.READ}`])
+    @Permissions([
+        `${PermissionResources.STORE_CONVERT}_${PermissionActions.READ}`,
+    ])
     async getConvertHistories(
         @Query(
             new RemoveEmptyQueryPipe(),
@@ -67,7 +69,9 @@ export class ConvertMaterialController {
     }
 
     @Get(':id')
-    @Permissions([`${PermissionResources.EVENT}_${PermissionActions.READ}`])
+    @Permissions([
+        `${PermissionResources.STORE_CONVERT}_${PermissionActions.READ}`,
+    ])
     async getConvertMaterial(@Param('id', ParseIntPipe) id: number) {
         try {
             const convertMaterial =
@@ -89,7 +93,9 @@ export class ConvertMaterialController {
     }
 
     @Post()
-    @Permissions([`${PermissionResources.EVENT}_${PermissionActions.CREATE}`])
+    @Permissions([
+        `${PermissionResources.STORE_CONVERT}_${PermissionActions.CREATE}`,
+    ])
     async createConvertMaterial(
         @Request() req,
         @Body(

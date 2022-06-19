@@ -10,10 +10,10 @@ import { InjectEntityManager } from '@nestjs/typeorm';
 import {
     DEFAULT_FIRST_PAGE,
     DEFAULT_LIMIT_FOR_PAGINATION,
+    DEFAULT_ORDER_BY,
     ORDER_DIRECTION,
 } from 'src/common/constants';
 import { Brackets, EntityManager, Like } from 'typeorm';
-import { EventOrderBy } from 'src/modules/event/event.constant';
 import {
     CreateExportMaterialOrderDto,
     ExportMaterialOrderDetailResponseDto,
@@ -74,7 +74,7 @@ export class ExportMaterialOrderService {
                 keyword = '',
                 page = DEFAULT_FIRST_PAGE,
                 limit = DEFAULT_LIMIT_FOR_PAGINATION,
-                orderBy = EventOrderBy.CREATED_AT,
+                orderBy = DEFAULT_ORDER_BY,
                 orderDirection = ORDER_DIRECTION.ASC,
                 exportMaterialId = undefined,
             } = query;

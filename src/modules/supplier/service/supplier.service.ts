@@ -11,19 +11,16 @@ import { Supplier } from '../entity/supplier.entity';
 import {
     DEFAULT_FIRST_PAGE,
     DEFAULT_LIMIT_FOR_PAGINATION,
-    DEFAULT_ORDER_DIRECTION,
+    DEFAULT_ORDER_BY,
     ORDER_DIRECTION,
 } from 'src/common/constants';
 import { Brackets, EntityManager, Like } from 'typeorm';
-import moment from 'moment';
 import {
     SupplierQueryStringDto,
     SupplierDetailResponseDto,
     CreateSupplierDto,
     UpdateSupplierDto,
 } from '../dto/supplier.dto';
-import { OrderBy } from '../supplier.constant';
-import { EventOrderBy } from 'src/modules/event/event.constant';
 
 const SupplierAttribute: (keyof Supplier)[] = [
     'id',
@@ -61,7 +58,7 @@ export class SupplierService {
                 keyword = '',
                 page = DEFAULT_FIRST_PAGE,
                 limit = DEFAULT_LIMIT_FOR_PAGINATION,
-                orderBy = EventOrderBy.CREATED_AT,
+                orderBy = DEFAULT_ORDER_BY,
                 orderDirection = ORDER_DIRECTION.ASC,
             } = query;
             const take = +limit || DEFAULT_LIMIT_FOR_PAGINATION;

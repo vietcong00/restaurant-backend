@@ -52,7 +52,9 @@ export class SupplierController {
     ) {}
 
     @Get()
-    @Permissions([`${PermissionResources.EVENT}_${PermissionActions.READ}`])
+    @Permissions([
+        `${PermissionResources.STORE_SUPPLIER}_${PermissionActions.READ}`,
+    ])
     async getSuppliers(
         @Query(
             new RemoveEmptyQueryPipe(),
@@ -71,7 +73,9 @@ export class SupplierController {
     }
 
     @Get(':id')
-    @Permissions([`${PermissionResources.EVENT}_${PermissionActions.READ}`])
+    @Permissions([
+        `${PermissionResources.STORE_SUPPLIER}_${PermissionActions.READ}`,
+    ])
     async getSupplier(@Param('id', ParseIntPipe) id: number) {
         try {
             const supplier = await this.supplierService.getSupplierDetail(id);
@@ -92,7 +96,9 @@ export class SupplierController {
     }
 
     @Post()
-    @Permissions([`${PermissionResources.EVENT}_${PermissionActions.CREATE}`])
+    @Permissions([
+        `${PermissionResources.STORE_SUPPLIER}_${PermissionActions.CREATE}`,
+    ])
     async createSupplier(
         @Request() req,
         @Body(new TrimObjectPipe(), new JoiValidationPipe(CreateSupplierSchema))
@@ -114,7 +120,9 @@ export class SupplierController {
     }
 
     @Patch(':id')
-    @Permissions([`${PermissionResources.EVENT}_${PermissionActions.UPDATE}`])
+    @Permissions([
+        `${PermissionResources.STORE_SUPPLIER}_${PermissionActions.UPDATE}`,
+    ])
     async updateSupplier(
         @Request() req,
         @Param('id', ParseIntPipe) id: number,
@@ -157,7 +165,9 @@ export class SupplierController {
     }
 
     @Delete(':id')
-    @Permissions([`${PermissionResources.EVENT}_${PermissionActions.DELETE}`])
+    @Permissions([
+        `${PermissionResources.STORE_SUPPLIER}_${PermissionActions.DELETE}`,
+    ])
     async deleteSupplier(
         @Request() req,
         @Param('id', ParseIntPipe) id: number,

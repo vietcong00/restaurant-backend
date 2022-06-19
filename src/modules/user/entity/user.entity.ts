@@ -14,8 +14,7 @@ import { UserStatus, UserGender } from '../user.constant';
 
 import * as bcrypt from 'bcrypt';
 import { BaseEntity } from 'src/common/entities/BaseEntity';
-import { Timekeeping } from 'src/modules/timekeeping/entity/timekeeping.entity';
-import { RequestAbsence } from 'src/modules/request-absence/entity/request-absences.entity';
+
 @Entity({ name: 'users' })
 export class User extends BaseEntity {
     @PrimaryGeneratedColumn()
@@ -135,8 +134,4 @@ export class User extends BaseEntity {
     }
 
     avatar: Record<string, string>;
-
-    timekeeping: Timekeeping[];
-
-    requestAbsences: RequestAbsence[];
 }

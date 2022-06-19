@@ -51,7 +51,9 @@ export class ClosingRevenueController {
     ) {}
 
     @Get()
-    @Permissions([`${PermissionResources.EVENT}_${PermissionActions.READ}`])
+    @Permissions([
+        `${PermissionResources.CLOSING_REVENUE}_${PermissionActions.READ}`,
+    ])
     async getExportClosingRevenues(
         @Query(
             new RemoveEmptyQueryPipe(),
@@ -69,7 +71,9 @@ export class ClosingRevenueController {
     }
 
     @Get(':id')
-    @Permissions([`${PermissionResources.EVENT}_${PermissionActions.READ}`])
+    @Permissions([
+        `${PermissionResources.CLOSING_REVENUE}_${PermissionActions.READ}`,
+    ])
     async getClosingRevenue(@Param('id', ParseIntPipe) id: number) {
         try {
             const material =
@@ -91,7 +95,9 @@ export class ClosingRevenueController {
     }
 
     @Post()
-    @Permissions([`${PermissionResources.EVENT}_${PermissionActions.CREATE}`])
+    @Permissions([
+        `${PermissionResources.CLOSING_REVENUE}_${PermissionActions.CREATE}`,
+    ])
     async createClosingRevenue(
         @Request() req,
         @Body(
@@ -117,7 +123,9 @@ export class ClosingRevenueController {
     }
 
     @Patch(':id')
-    @Permissions([`${PermissionResources.EVENT}_${PermissionActions.UPDATE}`])
+    @Permissions([
+        `${PermissionResources.CLOSING_REVENUE}_${PermissionActions.UPDATE}`,
+    ])
     async updateClosingRevenueStatus(
         @Request() req,
         @Param('id', ParseIntPipe) id: number,

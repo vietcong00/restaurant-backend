@@ -11,6 +11,7 @@ import { Material } from '../entity/material.entity';
 import {
     DEFAULT_FIRST_PAGE,
     DEFAULT_LIMIT_FOR_PAGINATION,
+    DEFAULT_ORDER_BY,
     ORDER_DIRECTION,
 } from 'src/common/constants';
 import { Brackets, EntityManager, Like } from 'typeorm';
@@ -20,7 +21,6 @@ import {
     MaterialQueryStringDto,
     UpdateMaterialDto,
 } from '../dto/material.dto';
-import { EventOrderBy } from 'src/modules/event/event.constant';
 
 const MaterialAttribute: (keyof Material)[] = [
     'id',
@@ -58,7 +58,7 @@ export class MaterialService {
                 keyword = '',
                 page = DEFAULT_FIRST_PAGE,
                 limit = DEFAULT_LIMIT_FOR_PAGINATION,
-                orderBy = EventOrderBy.CREATED_AT,
+                orderBy = DEFAULT_ORDER_BY,
                 orderDirection = ORDER_DIRECTION.ASC,
             } = query;
             const take = +limit || DEFAULT_LIMIT_FOR_PAGINATION;

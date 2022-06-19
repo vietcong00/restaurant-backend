@@ -52,7 +52,7 @@ export class FoodController {
     ) {}
 
     @Get()
-    @Permissions([`${PermissionResources.EVENT}_${PermissionActions.READ}`])
+    @Permissions([`${PermissionResources.MENU_FOOD}_${PermissionActions.READ}`])
     async getExportFoods(
         @Query(
             new RemoveEmptyQueryPipe(),
@@ -69,7 +69,7 @@ export class FoodController {
     }
 
     @Get(':id')
-    @Permissions([`${PermissionResources.EVENT}_${PermissionActions.READ}`])
+    @Permissions([`${PermissionResources.MENU_FOOD}_${PermissionActions.READ}`])
     async getFood(@Param('id', ParseIntPipe) id: number) {
         try {
             const material = await this.foodService.getFoodDetail(id);
@@ -90,7 +90,9 @@ export class FoodController {
     }
 
     @Post()
-    @Permissions([`${PermissionResources.EVENT}_${PermissionActions.CREATE}`])
+    @Permissions([
+        `${PermissionResources.MENU_FOOD}_${PermissionActions.CREATE}`,
+    ])
     async createFood(
         @Request() req,
         @Body(new TrimObjectPipe(), new JoiValidationPipe(CreateFoodSchema))
@@ -112,7 +114,9 @@ export class FoodController {
     }
 
     @Patch(':id')
-    @Permissions([`${PermissionResources.EVENT}_${PermissionActions.UPDATE}`])
+    @Permissions([
+        `${PermissionResources.MENU_FOOD}_${PermissionActions.UPDATE}`,
+    ])
     async updateFoodStatus(
         @Request() req,
         @Param('id', ParseIntPipe) id: number,
@@ -146,7 +150,9 @@ export class FoodController {
     }
 
     @Delete(':id')
-    @Permissions([`${PermissionResources.EVENT}_${PermissionActions.DELETE}`])
+    @Permissions([
+        `${PermissionResources.MENU_FOOD}_${PermissionActions.DELETE}`,
+    ])
     async deleteFood(@Request() req, @Param('id', ParseIntPipe) id: number) {
         try {
             const oldFood = await this.databaseService.getDataById(Food, id);

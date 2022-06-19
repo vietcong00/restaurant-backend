@@ -58,11 +58,7 @@ export class CommonController {
 
     @Get('/user')
     @UseGuards(JwtGuard, AuthorizationGuard)
-    @Permissions([
-        `${PermissionResources.USER}_${PermissionActions.READ}`,
-        `${PermissionResources.CONTRACT}_${PermissionActions.READ}`,
-        `${PermissionResources.BILLING}_${PermissionActions.READ}`,
-    ])
+    @Permissions([`${PermissionResources.USER}_${PermissionActions.READ}`])
     async getUsers(
         @Query(
             new RemoveEmptyQueryPipe(),

@@ -1,8 +1,3 @@
-import * as BaseJoi from 'joi';
-import JoiDate from '@joi/date';
-
-const Joi = BaseJoi.extend(JoiDate);
-
 export const MODULE_NAME = 'check-inventory';
 
 export enum OrderBy {

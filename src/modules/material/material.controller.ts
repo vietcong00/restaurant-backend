@@ -52,7 +52,9 @@ export class MaterialController {
     ) {}
 
     @Get()
-    @Permissions([`${PermissionResources.EVENT}_${PermissionActions.READ}`])
+    @Permissions([
+        `${PermissionResources.STORE_MATERIAL}_${PermissionActions.READ}`,
+    ])
     async getMaterials(
         @Query(
             new RemoveEmptyQueryPipe(),
@@ -71,7 +73,9 @@ export class MaterialController {
     }
 
     @Get(':id')
-    @Permissions([`${PermissionResources.EVENT}_${PermissionActions.READ}`])
+    @Permissions([
+        `${PermissionResources.STORE_MATERIAL}_${PermissionActions.READ}`,
+    ])
     async getMaterial(@Param('id', ParseIntPipe) id: number) {
         try {
             const material = await this.materialService.getMaterialDetail(id);
@@ -92,7 +96,9 @@ export class MaterialController {
     }
 
     @Post()
-    @Permissions([`${PermissionResources.EVENT}_${PermissionActions.CREATE}`])
+    @Permissions([
+        `${PermissionResources.STORE_MATERIAL}_${PermissionActions.CREATE}`,
+    ])
     async createMaterial(
         @Request() req,
         @Body(new TrimObjectPipe(), new JoiValidationPipe(CreateMaterialSchema))
@@ -114,7 +120,9 @@ export class MaterialController {
     }
 
     @Patch(':id')
-    @Permissions([`${PermissionResources.EVENT}_${PermissionActions.UPDATE}`])
+    @Permissions([
+        `${PermissionResources.STORE_MATERIAL}_${PermissionActions.UPDATE}`,
+    ])
     async updateMaterial(
         @Request() req,
         @Param('id', ParseIntPipe) id: number,
@@ -157,7 +165,9 @@ export class MaterialController {
     }
 
     @Delete(':id')
-    @Permissions([`${PermissionResources.EVENT}_${PermissionActions.DELETE}`])
+    @Permissions([
+        `${PermissionResources.STORE_MATERIAL}_${PermissionActions.DELETE}`,
+    ])
     async deleteMaterial(
         @Request() req,
         @Param('id', ParseIntPipe) id: number,

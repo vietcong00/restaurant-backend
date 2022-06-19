@@ -51,7 +51,9 @@ export class ImportMaterialController {
     ) {}
 
     @Get()
-    @Permissions([`${PermissionResources.EVENT}_${PermissionActions.READ}`])
+    @Permissions([
+        `${PermissionResources.STORE_IMPORT_MATERIAL}_${PermissionActions.READ}`,
+    ])
     async getImportImportMaterials(
         @Query(
             new RemoveEmptyQueryPipe(),
@@ -69,7 +71,9 @@ export class ImportMaterialController {
     }
 
     @Get(':id')
-    @Permissions([`${PermissionResources.EVENT}_${PermissionActions.READ}`])
+    @Permissions([
+        `${PermissionResources.STORE_IMPORT_MATERIAL}_${PermissionActions.READ}`,
+    ])
     async getImportMaterial(@Param('id', ParseIntPipe) id: number) {
         try {
             const material =
@@ -91,7 +95,9 @@ export class ImportMaterialController {
     }
 
     @Post()
-    @Permissions([`${PermissionResources.EVENT}_${PermissionActions.CREATE}`])
+    @Permissions([
+        `${PermissionResources.STORE_IMPORT_MATERIAL}_${PermissionActions.CREATE}`,
+    ])
     async createImportMaterial(
         @Request() req,
         @Body(
@@ -117,7 +123,9 @@ export class ImportMaterialController {
     }
 
     @Patch(':id')
-    @Permissions([`${PermissionResources.EVENT}_${PermissionActions.UPDATE}`])
+    @Permissions([
+        `${PermissionResources.STORE_IMPORT_MATERIAL}_${PermissionActions.UPDATE}`,
+    ])
     async updateImportMaterialStatus(
         @Request() req,
         @Param('id', ParseIntPipe) id: number,

@@ -1,5 +1,5 @@
 import { TableDiagramService } from './../table-diagram/services/tableDiagram.service';
-import { BookingStatus, TableStatus } from './booking.constant';
+import { BookingStatus } from './booking.constant';
 import {
     UpdateBookingSchema,
     UpdateBookingDto,
@@ -37,10 +37,14 @@ import {
     BookingListQueryStringSchema,
 } from './dto/requests/list-booking.dto';
 import { Booking } from './entity/booking.entity';
-import { AuthorizationGuard } from 'src/common/guards/authorization.guard';
+import {
+    AuthorizationGuard,
+    Permissions,
+} from 'src/common/guards/authorization.guard';
 import { HttpStatus } from 'src/common/constants';
 import { RemoveEmptyQueryPipe } from 'src/common/pipes/remove.empty.query.pipe';
 import { TrimObjectPipe } from 'src/common/pipes/trim.object.pipe';
+import { PermissionActions, PermissionResources } from '../role/role.constants';
 
 @Controller({
     path: 'booking',
@@ -55,7 +59,7 @@ export class BookingController {
     ) {}
 
     @Get()
-    // @Permissions([`${PermissionResources.BILLING}_${PermissionActions.READ}`])
+    @Permissions([`${PermissionResources.BOOKING}_${PermissionActions.READ}`])
     async getBookings(
         @Query(
             new RemoveEmptyQueryPipe(),
@@ -72,7 +76,7 @@ export class BookingController {
     }
 
     @Get(':id')
-    // @Permissions([`${PermissionResources.BILLING}_${PermissionActions.READ}`])
+    @Permissions([`${PermissionResources.BOOKING}_${PermissionActions.READ}`])
     async getBooking(@Param('id', ParseIntPipe) id: number) {
         try {
             const booking = await this.bookingService.getBookingDetail(id);
@@ -93,7 +97,7 @@ export class BookingController {
     }
 
     @Post()
-    // @Permissions([`${PermissionResources.BILLING}_${PermissionActions.CREATE}`])
+    @Permissions([`${PermissionResources.BOOKING}_${PermissionActions.CREATE}`])
     async create(
         @Request() req,
         @Body(new TrimObjectPipe(), new JoiValidationPipe(CreateBookingSchema))
@@ -116,7 +120,7 @@ export class BookingController {
     }
 
     @Patch(':id')
-    // @Permissions([`${PermissionResources.BILLING}_${PermissionActions.UPDATE}`])
+    @Permissions([`${PermissionResources.BOOKING}_${PermissionActions.UPDATE}`])
     async updateBooking(
         @Request() req,
         @Param('id') id: number,
@@ -166,7 +170,7 @@ export class BookingController {
     }
 
     @Delete(':id')
-    // @Permissions([`${PermissionResources.BILLING}_${PermissionActions.DELETE}`])
+    @Permissions([`${PermissionResources.BOOKING}_${PermissionActions.DELETE}`])
     async deleteBooking(@Request() req, @Param('id', ParseIntPipe) id: number) {
         try {
             const oldBooking = await this.databaseService.getDataById(

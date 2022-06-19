@@ -51,7 +51,9 @@ export class ExportMaterialOrderController {
     ) {}
 
     @Get()
-    @Permissions([`${PermissionResources.EVENT}_${PermissionActions.READ}`])
+    @Permissions([
+        `${PermissionResources.STORE_EXPORT_MATERIAL}_${PermissionActions.READ}`,
+    ])
     async getExportMaterialOrders(
         @Query(
             new RemoveEmptyQueryPipe(),
@@ -71,7 +73,9 @@ export class ExportMaterialOrderController {
     }
 
     @Get(':id')
-    @Permissions([`${PermissionResources.EVENT}_${PermissionActions.READ}`])
+    @Permissions([
+        `${PermissionResources.STORE_EXPORT_MATERIAL}_${PermissionActions.READ}`,
+    ])
     async getExportMaterialOrder(@Param('id', ParseIntPipe) id: number) {
         try {
             const material =
@@ -95,7 +99,9 @@ export class ExportMaterialOrderController {
     }
 
     @Post()
-    @Permissions([`${PermissionResources.EVENT}_${PermissionActions.CREATE}`])
+    @Permissions([
+        `${PermissionResources.STORE_EXPORT_MATERIAL}_${PermissionActions.CREATE}`,
+    ])
     async createExportMaterialOrder(
         @Request() req,
         @Body(
@@ -123,7 +129,9 @@ export class ExportMaterialOrderController {
     }
 
     @Patch(':id')
-    @Permissions([`${PermissionResources.EVENT}_${PermissionActions.UPDATE}`])
+    @Permissions([
+        `${PermissionResources.STORE_EXPORT_MATERIAL}_${PermissionActions.UPDATE}`,
+    ])
     async updateExportMaterialOrderStatus(
         @Request() req,
         @Param('id', ParseIntPipe) id: number,

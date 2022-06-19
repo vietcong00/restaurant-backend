@@ -85,8 +85,6 @@ export const MIN_TAX_CODE_LENGTH = 10;
 
 export const FINGER_SCANNER_DATA_KEY = 'LAST_DAY_DOWNLOAD_FINGER_SCANNER_DATA';
 
-export const TOKYOTECHBAB_DOMAIN = '@tokyotechlab.com';
-
 export const MAX_LENGTH_DAYS_OF_MONTH = 31;
 
 export const MAX_LENGTH_MONTH = 12;

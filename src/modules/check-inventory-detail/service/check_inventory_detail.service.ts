@@ -10,10 +10,10 @@ import { InjectEntityManager } from '@nestjs/typeorm';
 import {
     DEFAULT_FIRST_PAGE,
     DEFAULT_LIMIT_FOR_PAGINATION,
+    DEFAULT_ORDER_BY,
     ORDER_DIRECTION,
 } from 'src/common/constants';
 import { Brackets, EntityManager, Like } from 'typeorm';
-import { EventOrderBy } from 'src/modules/event/event.constant';
 import { CheckInventoryDetail } from '../entity/check_inventory_detail.entity';
 import {
     CheckInventoryDetailQueryStringDto,
@@ -21,6 +21,7 @@ import {
     CreateCheckInventoryDetailDto,
     UpdateCheckInventoryDetailDto,
 } from '../dto/check_inventory_detail.dto';
+import { OrderBy } from '../check_inventory_detail.constant';
 
 const CheckInventoryDetailAttribute: (keyof CheckInventoryDetail)[] = [
     'id',
@@ -76,7 +77,7 @@ export class CheckInventoryDetailService {
                 keyword = '',
                 page = DEFAULT_FIRST_PAGE,
                 limit = DEFAULT_LIMIT_FOR_PAGINATION,
-                orderBy = EventOrderBy.CREATED_AT,
+                orderBy = DEFAULT_ORDER_BY,
                 orderDirection = ORDER_DIRECTION.ASC,
                 checkInventoryId = undefined,
             } = query;

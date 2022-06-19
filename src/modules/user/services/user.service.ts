@@ -27,12 +27,7 @@ import { UserResponseDto } from '../dto/response/user-response.dto';
 import { UpdateUserDto } from '../dto/requests/update-user.dto';
 import { UserStatusDto } from '../dto/requests/common-user.dto';
 import xlsx from 'xlsx';
-import { Timekeeping } from '../../timekeeping/entity/timekeeping.entity';
-import { IUpdateUserFinger } from 'src/modules/timekeeping/timekeeping.interface';
-import { FingerScannerData } from 'src/modules/timekeeping/entity/finger-scanner-data.entity';
 import { makeFileUrl } from 'src/common/helpers/common.function';
-import { RequestAbsence } from 'src/modules/request-absence/entity/request-absences.entity';
-import { TeamMember } from 'src/modules/team/entity/team-users.entity';
 
 @Injectable()
 export class UserService {
@@ -257,38 +252,6 @@ export class UserService {
                         deletedBy,
                     },
                 ),
-                this.dbManager.update(
-                    Timekeeping,
-                    { userId: id },
-                    {
-                        deletedAt: timeNow,
-                        deletedBy,
-                    },
-                ),
-                this.dbManager.update(
-                    RequestAbsence,
-                    { userId: id },
-                    {
-                        deletedAt: timeNow,
-                        deletedBy,
-                    },
-                ),
-                this.dbManager.update(
-                    FingerScannerData,
-                    { userId: id },
-                    {
-                        deletedAt: timeNow,
-                        deletedBy,
-                    },
-                ),
-                this.dbManager.update(
-                    TeamMember,
-                    { userId: id },
-                    {
-                        deletedAt: timeNow,
-                        deletedBy,
-                    },
-                ),
             ]);
         } catch (error) {
             throw error;
@@ -305,22 +268,6 @@ export class UserService {
             const savedUser = await this.getUserById(id);
 
             return savedUser;
-        } catch (error) {
-            throw error;
-        }
-    }
-
-    async uploadFileCSV(file): Promise<void> {
-        try {
-            const workbook = xlsx.read(file?.buffer, { type: 'buffer' });
-            const sheetContent = xlsx.utils.sheet_to_json(
-                workbook.Sheets[workbook.SheetNames[0]],
-            ) as IUpdateUserFinger[];
-            sheetContent.forEach(async (item) => {
-                await this.dbManager.update(User, item.userId, {
-                    fingerId: item?.fingerId,
-                });
-            });
         } catch (error) {
             throw error;
         }

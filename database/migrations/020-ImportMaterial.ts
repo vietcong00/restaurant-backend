@@ -1,22 +1,12 @@
-import {
-    CandidateGender,
-    CandidateLevel,
-    CandidateStatus,
-    CandidateResource,
-} from '../../src/modules/recruitment/recruitment.constant';
-import {
-    MigrationInterface,
-    QueryRunner,
-    Table,
-    TableForeignKey,
-} from 'typeorm';
+import { AcceptStatus } from '../../src/modules/import-material/import_material.constant';
+import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 import { TABLE_NAME } from '../constant';
 
-export class Candidate1632891593001 implements MigrationInterface {
+export class ImportMaterial1632891593044 implements MigrationInterface {
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.createTable(
             new Table({
-                name: TABLE_NAME.Candidates,
+                name: TABLE_NAME.ImportMaterials,
                 columns: [
                     {
                         name: 'id',
@@ -26,72 +16,30 @@ export class Candidate1632891593001 implements MigrationInterface {
                         generationStrategy: 'increment',
                     },
                     {
-                        name: 'fullName',
-                        type: 'varchar',
-                        length: '255',
-                        isNullable: false,
-                    },
-                    {
-                        name: 'email',
-                        type: 'varchar',
-                        length: '255',
-                        isNullable: false,
-                    },
-                    {
-                        name: 'phoneNumber',
-                        type: 'varchar',
-                        length: '255',
-                        isNullable: false,
-                    },
-                    {
-                        name: 'birthday',
-                        type: 'datetime',
-                        isNullable: true,
-                    },
-                    {
-                        name: 'cvFileId',
+                        name: 'supplierId',
                         type: 'int',
-                        isNullable: false,
-                    },
-                    {
-                        name: 'gender',
-                        type: 'enum',
-                        enum: Object.values(CandidateGender),
                         isNullable: true,
                     },
                     {
-                        name: 'appliedPosition',
-                        type: 'varchar',
-                        length: '255',
-                        isNullable: false,
+                        name: 'warehouseStaffId',
+                        type: 'int',
+                        isNullable: true,
                     },
                     {
-                        name: 'level',
-                        type: 'enum',
-                        enum: Object.values(CandidateLevel),
+                        name: 'totalPaymentImport',
+                        type: 'int',
                         isNullable: true,
                     },
                     {
                         name: 'status',
                         type: 'enum',
-                        enum: Object.values(CandidateStatus),
-                        isNullable: false,
-                    },
-                    {
-                        name: 'resource',
-                        type: 'enum',
-                        enum: Object.values(CandidateResource),
+                        enum: Object.values(AcceptStatus),
                         isNullable: true,
                     },
                     {
                         name: 'note',
                         type: 'varchar',
                         length: '255',
-                        isNullable: true,
-                    },
-                    {
-                        name: 'avatarId',
-                        type: 'int',
                         isNullable: true,
                     },
                     {
@@ -130,6 +78,6 @@ export class Candidate1632891593001 implements MigrationInterface {
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.dropTable(TABLE_NAME.Candidates);
+        await queryRunner.dropTable(TABLE_NAME.ImportMaterials);
     }
 }
