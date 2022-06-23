@@ -1,8 +1,8 @@
 import { ImportMaterial } from './../../import-material/entity/import_material.entity';
 import { Entity, Column, JoinColumn, ManyToOne } from 'typeorm';
 import { BaseEntity } from 'src/common/entities/BaseEntity';
-import { AcceptStatus } from '../import_material_order.constant';
 import { Material } from 'src/modules/material/entity/material.entity';
+import { AcceptStatus } from 'src/modules/common/common.constant';
 
 @Entity({ name: 'import_material_orders' })
 export class ImportMaterialOrder extends BaseEntity {

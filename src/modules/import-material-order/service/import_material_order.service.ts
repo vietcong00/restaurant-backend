@@ -53,22 +53,24 @@ export class ImportMaterialOrderService {
                     ]);
                 }),
             );
-            if (importMaterialId) {
-                queryBuilder.andWhere(
-                    new Brackets((qb) => {
-                        qb.where([
-                            {
-                                importMaterialId,
-                            },
-                        ]);
-                    }),
-                );
-            }
+        }
+        if (importMaterialId) {
+            queryBuilder.andWhere(
+                new Brackets((qb) => {
+                    qb.where([
+                        {
+                            importMaterialId,
+                        },
+                    ]);
+                }),
+            );
         }
     }
 
     async getImportMaterialOrderList(query: ImportMaterialOrderQueryStringDto) {
         try {
+            console.log('query', query);
+
             const {
                 keyword = '',
                 page = DEFAULT_FIRST_PAGE,
@@ -79,6 +81,7 @@ export class ImportMaterialOrderService {
             } = query;
             const take = +limit || DEFAULT_LIMIT_FOR_PAGINATION;
             const skip = (+page - 1) * take || 0;
+
             const [items, totalItems] = await this.dbManager.findAndCount(
                 ImportMaterialOrder,
                 {

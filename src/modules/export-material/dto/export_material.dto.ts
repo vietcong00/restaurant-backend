@@ -10,7 +10,8 @@ import {
     MIN_PAGE_SIZE,
     ORDER_DIRECTION,
 } from 'src/common/constants';
-import { AcceptStatus, OrderBy } from '../export_material.constant';
+import { OrderBy } from '../export_material.constant';
+import { AcceptStatus } from 'src/modules/common/common.constant';
 
 export const ExportMaterialListQueryStringSchema = Joi.object().keys({
     page: Joi.number().min(MIN_PAGE).max(MAX_PAGE).optional(),

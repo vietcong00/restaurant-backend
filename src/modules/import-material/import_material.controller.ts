@@ -40,6 +40,7 @@ import {
 } from './dto/import_material.dto';
 import { ImportMaterial } from './entity/import_material.entity';
 import { ImportMaterialService } from './service/import_material.service';
+import { AcceptStatus } from '../common/common.constant';
 
 @Controller('import-material')
 @UseGuards(JwtGuard, AuthorizationGuard)
@@ -108,6 +109,8 @@ export class ImportMaterialController {
     ) {
         try {
             body.createdBy = req.loginUser.id;
+            body.warehouseStaffId = req.loginUser.id;
+            body.status = AcceptStatus.WAITING_APPROVE;
             const newImportMaterial =
                 await this.importMaterialService.createImportMaterial(body);
             await this.databaseService.recordUserLogging({
@@ -159,6 +162,14 @@ export class ImportMaterialController {
                 ImportMaterial,
                 id,
             );
+            if (
+                body.status === AcceptStatus.APPROVE &&
+                oldImportMaterial.status != AcceptStatus.APPROVE
+            ) {
+                this.importMaterialService.updateQuantityMaterialInWareHouse(
+                    id,
+                );
+            }
             await this.databaseService.recordUserLogging({
                 userId: req.loginUser?.id,
                 route: req.route,

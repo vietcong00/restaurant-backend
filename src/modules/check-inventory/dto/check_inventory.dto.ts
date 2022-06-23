@@ -10,7 +10,8 @@ import {
     MIN_PAGE_SIZE,
     ORDER_DIRECTION,
 } from 'src/common/constants';
-import { AcceptStatus, OrderBy } from '../check_inventory.constant';
+import { OrderBy } from '../check_inventory.constant';
+import { AcceptStatus } from 'src/modules/common/common.constant';
 
 export const CheckInventoryListQueryStringSchema = Joi.object().keys({
     page: Joi.number().min(MIN_PAGE).max(MAX_PAGE).optional(),

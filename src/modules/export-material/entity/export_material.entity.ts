@@ -1,7 +1,7 @@
 import { User } from 'src/modules/user/entity/user.entity';
 import { Entity, Column, JoinColumn, ManyToOne } from 'typeorm';
 import { BaseEntity } from 'src/common/entities/BaseEntity';
-import { AcceptStatus } from '../export_material.constant';
+import { AcceptStatus } from 'src/modules/common/common.constant';
 
 @Entity({ name: 'export_materials' })
 export class ExportMaterial extends BaseEntity {

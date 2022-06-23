@@ -40,12 +40,15 @@ import {
 } from './dto/import_material_order.dto';
 import { ImportMaterialOrder } from './entity/import_material_order.entity';
 import { ImportMaterialOrderService } from './service/import_material_order.service';
+import { AcceptStatus } from '../common/common.constant';
+import { ImportMaterialService } from '../import-material/service/import_material.service';
 
 @Controller('import-material-order')
 @UseGuards(JwtGuard, AuthorizationGuard)
 export class ImportMaterialOrderController {
     constructor(
         private readonly importMaterialOrderService: ImportMaterialOrderService,
+        private readonly importMaterialService: ImportMaterialService,
         private readonly i18n: I18nRequestScopeService,
         private readonly databaseService: DatabaseService,
     ) {}
@@ -54,7 +57,7 @@ export class ImportMaterialOrderController {
     @Permissions([
         `${PermissionResources.STORE_IMPORT_MATERIAL}_${PermissionActions.READ}`,
     ])
-    async getImportImportMaterialOrders(
+    async getImportMaterialOrders(
         @Query(
             new RemoveEmptyQueryPipe(),
             new JoiValidationPipe(ImportMaterialOrderListQueryStringSchema),
@@ -112,6 +115,7 @@ export class ImportMaterialOrderController {
     ) {
         try {
             body.createdBy = req.loginUser.id;
+            body.status = AcceptStatus.WAITING_APPROVE;
             const newImportMaterialOrder =
                 await this.importMaterialOrderService.createImportMaterialOrder(
                     body,
@@ -163,6 +167,14 @@ export class ImportMaterialOrderController {
                 ImportMaterialOrder,
                 id,
             );
+            if (
+                body.status === AcceptStatus.APPROVE &&
+                oldImportMaterialOrder.status != AcceptStatus.APPROVE
+            ) {
+                this.importMaterialService.updateTotalPayment(
+                    material.importMaterialId,
+                );
+            }
             await this.databaseService.recordUserLogging({
                 userId: req.loginUser?.id,
                 route: req.route,

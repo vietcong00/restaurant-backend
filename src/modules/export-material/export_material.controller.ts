@@ -40,6 +40,7 @@ import {
 } from './dto/export_material.dto';
 import { ExportMaterial } from './entity/export_material.entity';
 import { ExportMaterialService } from './service/export_material.service';
+import { AcceptStatus } from '../common/common.constant';
 
 @Controller('export-material')
 @UseGuards(JwtGuard, AuthorizationGuard)
@@ -108,6 +109,7 @@ export class ExportMaterialController {
     ) {
         try {
             body.createdBy = req.loginUser.id;
+            body.status = AcceptStatus.WAITING_APPROVE;
             const newExportMaterial =
                 await this.exportMaterialService.createExportMaterial(body);
             await this.databaseService.recordUserLogging({

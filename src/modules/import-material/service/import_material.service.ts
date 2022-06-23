@@ -1,3 +1,5 @@
+import { Material } from 'src/modules/material/entity/material.entity';
+import { ImportMaterialOrder } from './../../import-material-order/entity/import_material_order.entity';
 import {
     Inject,
     Injectable,
@@ -21,6 +23,7 @@ import {
     CreateImportMaterialDto,
     UpdateImportMaterialDto,
 } from '../dto/import_material.dto';
+import { AcceptStatus } from 'src/modules/common/common.constant';
 
 const ImportMaterialAttribute: (keyof ImportMaterial)[] = [
     'id',
@@ -140,6 +143,56 @@ export class ImportMaterialService {
             );
             const savedMaterial = await this.getImportMaterialDetail(id);
             return savedMaterial;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async updateQuantityMaterialInWareHouse(importMaterialId: number) {
+        try {
+            const materials = await this.dbManager.find(ImportMaterialOrder, {
+                where: { importMaterialId, status: AcceptStatus.APPROVE },
+            });
+            materials.forEach(async (element) => {
+                const material = await this.dbManager.findOne(Material, {
+                    where: {
+                        id: element.materialId,
+                    },
+                });
+
+                await this.dbManager.update(
+                    Material,
+                    {
+                        id: element.materialId,
+                    },
+                    {
+                        quantity: material.quantity + element.quantity,
+                    },
+                );
+            });
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async updateTotalPayment(importMaterialId: number) {
+        try {
+            const materials = await this.dbManager.find(ImportMaterialOrder, {
+                where: { importMaterialId, status: AcceptStatus.APPROVE },
+            });
+            let newTotalPayment = 0;
+            materials.forEach((element) => {
+                newTotalPayment += element.pricePerUnit * element.quantity;
+            });
+            await this.dbManager.update(
+                ImportMaterial,
+                {
+                    id: importMaterialId,
+                },
+                {
+                    totalPaymentImport: newTotalPayment,
+                },
+            );
         } catch (error) {
             throw error;
         }

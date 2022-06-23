@@ -17,6 +17,10 @@ export class ListCategoryDropdown extends CommonListResponse<CategoryDropdownRes
     items: CategoryDropdownResponseDto[];
 }
 
+export class ListSupplierDropdown extends CommonListResponse<SupplierDropdownResponseDto> {
+    items: SupplierDropdownResponseDto[];
+}
+
 export class ListBankDropdown extends CommonListResponse<BankDropdownResponseDto> {
     items: BankDropdownResponseDto[];
 }
@@ -40,6 +44,11 @@ export class CategoryDropdownResponseDto {
     name: string;
     priority: number;
     note: string;
+}
+
+export class SupplierDropdownResponseDto {
+    id: number;
+    name: string;
 }
 export class BankDropdownResponseDto {
     id: number;

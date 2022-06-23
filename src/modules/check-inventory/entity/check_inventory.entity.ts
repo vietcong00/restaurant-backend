@@ -1,7 +1,7 @@
 import { User } from 'src/modules/user/entity/user.entity';
 import { Entity, Column, JoinColumn, ManyToOne } from 'typeorm';
 import { BaseEntity } from 'src/common/entities/BaseEntity';
-import { AcceptStatus } from '../check_inventory.constant';
+import { AcceptStatus } from 'src/modules/common/common.constant';
 
 @Entity({ name: 'check_inventories' })
 export class CheckInventory extends BaseEntity {

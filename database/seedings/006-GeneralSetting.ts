@@ -13,52 +13,31 @@ export class UserGeneralSetting1724329509104 implements MigrationInterface {
                 key: SettingKey.USER_POSITION,
                 values: [
                     {
-                        code: 'CEO',
+                        code: 'SHIFT_LEADER',
                         value: {
-                            en: 'CEO',
-                            vi: 'Giám đốc điều hành',
+                            en: 'Shift Leader',
+                            vi: 'Trưởng ca',
                         },
                     },
                     {
-                        code: 'CTO',
+                        code: 'CASHIER',
                         value: {
-                            en: 'CTO',
-                            vi: 'Giám đốc kỹ thuật',
+                            en: 'Cashier',
+                            vi: 'Thu ngân',
                         },
                     },
                     {
-                        code: 'COO',
+                        code: 'CHEF',
                         value: {
-                            en: 'COO',
-                            vi: 'Phó giám đốc điều hành',
+                            en: 'Chef',
+                            vi: 'Đầu bếp',
                         },
                     },
                     {
-                        code: 'QA',
+                        code: 'WAITER',
                         value: {
-                            en: 'QA',
-                            vi: 'QA',
-                        },
-                    },
-                    {
-                        code: 'TESTER',
-                        value: {
-                            en: 'Tester',
-                            vi: 'Kiểm thử',
-                        },
-                    },
-                    {
-                        code: 'PROJECT_MANAGER',
-                        value: {
-                            en: 'Project manager',
-                            vi: 'Trưởng dự án',
-                        },
-                    },
-                    {
-                        code: 'HUMAN_RESOURCE',
-                        value: {
-                            en: 'Human resources',
-                            vi: 'Nhân sự',
+                            en: 'Waiter',
+                            vi: 'Bồi bàn',
                         },
                     },
                 ],

@@ -1,8 +1,8 @@
 import { Entity, Column, JoinColumn, ManyToOne } from 'typeorm';
 import { BaseEntity } from 'src/common/entities/BaseEntity';
-import { AcceptStatus } from '../export_material_order.constant';
 import { Material } from 'src/modules/material/entity/material.entity';
 import { ExportMaterial } from 'src/modules/export-material/entity/export_material.entity';
+import { AcceptStatus } from 'src/modules/common/common.constant';
 
 @Entity({ name: 'export_material_orders' })
 export class ExportMaterialOrder extends BaseEntity {

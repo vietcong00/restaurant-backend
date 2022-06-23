@@ -2,7 +2,7 @@ import { User } from 'src/modules/user/entity/user.entity';
 import { Entity, Column, JoinColumn, ManyToOne } from 'typeorm';
 import { BaseEntity } from 'src/common/entities/BaseEntity';
 import { Supplier } from 'src/modules/supplier/entity/supplier.entity';
-import { AcceptStatus } from '../import_material.constant';
+import { AcceptStatus } from 'src/modules/common/common.constant';
 
 @Entity({ name: 'import_materials' })
 export class ImportMaterial extends BaseEntity {

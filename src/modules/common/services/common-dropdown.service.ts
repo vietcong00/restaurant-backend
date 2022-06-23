@@ -1,3 +1,4 @@
+import { Supplier } from './../../supplier/entity/supplier.entity';
 import { Category } from '../../category/entity/category.entity';
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectEntityManager } from '@nestjs/typeorm';
@@ -9,6 +10,7 @@ import {
     ListMaterialDropdown,
     ListProvinceDropdown,
     ListRoleDropdown,
+    ListSupplierDropdown,
     ListUserDropdown,
 } from '../dto/responses/user-dropdown-response.dto';
 import { QueryDropdown } from '../dto/request/dropdown.dto';
@@ -40,6 +42,8 @@ const categoryDropdownListAttributes: (keyof Category)[] = [
     'priority',
     'note',
 ];
+
+const supplierDropdownListAttributes: (keyof Supplier)[] = ['id', 'name'];
 @Injectable()
 export class CommonDropdownService {
     constructor(
@@ -211,6 +215,31 @@ export class CommonDropdownService {
                 Category,
                 {
                     select: categoryDropdownListAttributes,
+                    where: (queryBuilder) =>
+                        this.generateQueryBuilder(queryBuilder, {
+                            page,
+                            limit,
+                            status: [],
+                            withDeleted: false,
+                        }),
+                },
+            );
+            return {
+                totalItems,
+                items,
+            };
+        } catch (error) {
+            throw new InternalServerErrorException();
+        }
+    }
+
+    async getListSupplier(query: QueryDropdown): Promise<ListSupplierDropdown> {
+        try {
+            const { page, limit } = query;
+            const [items, totalItems] = await this.dbManager.findAndCount(
+                Supplier,
+                {
+                    select: supplierDropdownListAttributes,
                     where: (queryBuilder) =>
                         this.generateQueryBuilder(queryBuilder, {
                             page,
