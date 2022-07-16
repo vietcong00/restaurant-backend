@@ -41,12 +41,17 @@ import {
 import { ImportMaterial } from './entity/import_material.entity';
 import { ImportMaterialService } from './service/import_material.service';
 import { AcceptStatus } from '../common/common.constant';
+import { CommonDropdownService } from '../common/services/common-dropdown.service';
+import { ImportMaterialOrderService } from '../import-material-order/service/import_material_order.service';
+import { CreateImportMaterialOrderDto } from '../import-material-order/dto/import_material_order.dto';
 
 @Controller('import-material')
 @UseGuards(JwtGuard, AuthorizationGuard)
 export class ImportMaterialController {
     constructor(
         private readonly importMaterialService: ImportMaterialService,
+        private readonly importMaterialOrderService: ImportMaterialOrderService,
+        private readonly commonDropdownService: CommonDropdownService,
         private readonly i18n: I18nRequestScopeService,
         private readonly databaseService: DatabaseService,
     ) {}
@@ -113,12 +118,21 @@ export class ImportMaterialController {
             body.status = AcceptStatus.WAITING_APPROVE;
             const newImportMaterial =
                 await this.importMaterialService.createImportMaterial(body);
-            await this.databaseService.recordUserLogging({
-                userId: req.loginUser?.id,
-                route: req.route,
-                oldValue: {},
-                newValue: { ...newImportMaterial },
-            });
+            const materials = this.commonDropdownService.getListMaterial({});
+            const importBody = (await materials).items.map(
+                (item) =>
+                    ({
+                        materialId: item.id,
+                        pricePerUnit: 0,
+                        quantity: 0,
+                        note: '',
+                        importMaterialId: newImportMaterial.id,
+                        status: AcceptStatus.APPROVE,
+                    } as CreateImportMaterialOrderDto),
+            );
+            await this.importMaterialOrderService.bulkCreateImportMaterialOrders(
+                importBody,
+            );
             return new SuccessResponse(newImportMaterial);
         } catch (error) {
             throw new InternalServerErrorException(error);

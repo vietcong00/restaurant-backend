@@ -41,11 +41,17 @@ import {
 import { ExportMaterial } from './entity/export_material.entity';
 import { ExportMaterialService } from './service/export_material.service';
 import { AcceptStatus } from '../common/common.constant';
+import { CommonDropdownService } from '../common/services/common-dropdown.service';
+import { CreateImportMaterialOrderDto } from '../import-material-order/dto/import_material_order.dto';
+import { ExportMaterialOrderService } from '../export-material-order/service/export_material_order.service';
+import { CreateExportMaterialOrderDto } from '../export-material-order/dto/export_material_order.dto';
 
 @Controller('export-material')
 @UseGuards(JwtGuard, AuthorizationGuard)
 export class ExportMaterialController {
     constructor(
+        private readonly commonDropdownService: CommonDropdownService,
+        private readonly exportMaterialOrderService: ExportMaterialOrderService,
         private readonly exportMaterialService: ExportMaterialService,
         private readonly i18n: I18nRequestScopeService,
         private readonly databaseService: DatabaseService,
@@ -113,12 +119,21 @@ export class ExportMaterialController {
             body.status = AcceptStatus.WAITING_APPROVE;
             const newExportMaterial =
                 await this.exportMaterialService.createExportMaterial(body);
-            await this.databaseService.recordUserLogging({
-                userId: req.loginUser?.id,
-                route: req.route,
-                oldValue: {},
-                newValue: { ...newExportMaterial },
-            });
+            const materials = this.commonDropdownService.getListMaterial({});
+            const exportBody = (await materials).items.map(
+                (item) =>
+                    ({
+                        materialId: item.id,
+                        pricePerUnit: 0,
+                        quantity: 0,
+                        note: '',
+                        exportMaterialId: newExportMaterial.id,
+                        status: AcceptStatus.APPROVE,
+                    } as CreateExportMaterialOrderDto),
+            );
+            await this.exportMaterialOrderService.bulkCreateImportMaterialOrders(
+                exportBody,
+            );
             return new SuccessResponse(newExportMaterial);
         } catch (error) {
             throw new InternalServerErrorException(error);

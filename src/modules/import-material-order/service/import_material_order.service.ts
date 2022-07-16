@@ -14,7 +14,7 @@ import {
     DEFAULT_ORDER_BY,
     ORDER_DIRECTION,
 } from 'src/common/constants';
-import { Brackets, EntityManager, Like } from 'typeorm';
+import { Brackets, EntityManager, getConnection, Like } from 'typeorm';
 import {
     CreateImportMaterialOrderDto,
     ImportMaterialOrderDetailResponseDto,
@@ -160,6 +160,21 @@ export class ImportMaterialOrderService {
             return savedMaterial;
         } catch (error) {
             throw error;
+        }
+    }
+
+    async bulkCreateImportMaterialOrders(
+        importMaterialOrders: CreateImportMaterialOrderDto[],
+    ) {
+        try {
+            await getConnection()
+                .createQueryBuilder()
+                .insert()
+                .into(ImportMaterialOrder)
+                .values(importMaterialOrders)
+                .execute();
+        } catch (err) {
+            throw err;
         }
     }
 }
