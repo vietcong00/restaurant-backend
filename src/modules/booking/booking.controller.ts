@@ -77,12 +77,12 @@ export class BookingController {
 
     @Get(':id')
     @Permissions([`${PermissionResources.BOOKING}_${PermissionActions.READ}`])
-    async getBooking(@Param('id', ParseIntPipe) id: number) {
+    async getBookingDetail(@Param('id', ParseIntPipe) id: number) {
         try {
             const booking = await this.bookingService.getBookingDetail(id);
             if (!booking) {
                 const message = await this.i18n.translate(
-                    'billing.message.error.itemNotExist',
+                    'booking.message.error.itemNotExist',
                 );
                 return new ErrorResponse(
                     HttpStatus.ITEM_NOT_FOUND,
@@ -107,12 +107,15 @@ export class BookingController {
             body.createdBy = req.loginUser.id;
             body.status = BookingStatus.WAITING;
             const newBooking = await this.bookingService.createBooking(body);
-            await this.databaseService.recordUserLogging({
-                userId: req.loginUser?.id,
-                route: req.route,
-                oldValue: {},
-                newValue: { ...newBooking },
-            });
+            const isExistBookingWaiting =
+                await this.bookingService.checkExistBookingWaitingInTable(
+                    body.tableId,
+                );
+            this.tableDiagramService.updateStatusTableRelativeBooking(
+                body.tableId,
+                body.status,
+                isExistBookingWaiting,
+            );
             return new SuccessResponse(newBooking);
         } catch (error) {
             throw new InternalServerErrorException(error);
@@ -134,7 +137,7 @@ export class BookingController {
             );
             if (!oldBooking) {
                 const message = await this.i18n.translate(
-                    'billing.message.error.itemNotExist',
+                    'booking.message.error.itemNotExist',
                 );
                 return new ErrorResponse(
                     HttpStatus.ITEM_NOT_FOUND,
@@ -149,20 +152,13 @@ export class BookingController {
             );
             const isExistBookingWaiting =
                 await this.bookingService.checkExistBookingWaitingInTable(
-                    updatedBooking.idTable,
+                    updatedBooking.tableId,
                 );
-            this.tableDiagramService.updateStatusTableRelativeBooking(
-                updatedBooking.idTable,
+            await this.tableDiagramService.updateStatusTableRelativeBooking(
+                updatedBooking.tableId,
                 updatedBooking.status,
                 isExistBookingWaiting,
             );
-
-            await this.databaseService.recordUserLogging({
-                userId: req.loginUser?.id,
-                route: req.route,
-                oldValue: { ...oldBooking },
-                newValue: { ...updatedBooking },
-            });
             return new SuccessResponse(updatedBooking);
         } catch (error) {
             throw new InternalServerErrorException(error);
@@ -179,7 +175,7 @@ export class BookingController {
             );
             if (!oldBooking) {
                 const message = await this.i18n.translate(
-                    'billing.message.error.itemNotExist',
+                    'booking.message.error.itemNotExist',
                 );
                 return new ErrorResponse(
                     HttpStatus.ITEM_NOT_FOUND,
@@ -190,7 +186,7 @@ export class BookingController {
 
             await this.bookingService.deleteBooking(id, req.loginUser.id);
             const message = await this.i18n.translate(
-                'billing.message.success.delete',
+                'booking.message.success.delete',
             );
 
             await this.databaseService.recordUserLogging({

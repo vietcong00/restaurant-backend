@@ -109,6 +109,7 @@ export class ExportMaterialController {
     ) {
         try {
             body.createdBy = req.loginUser.id;
+            body.warehouseStaffId = req.loginUser.id;
             body.status = AcceptStatus.WAITING_APPROVE;
             const newExportMaterial =
                 await this.exportMaterialService.createExportMaterial(body);

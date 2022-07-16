@@ -10,8 +10,6 @@ export enum ModuleName {
     USER = 'user',
     TABLE_DIAGRAM = 'table_diagram',
     BOOKING = 'booking',
-    MENU_FOOD = 'food',
-    MENU_CATEGORY = 'category',
     STORE_MATERIAL = 'store_material',
     STORE_CONVERT = 'store_convert',
     STORE_SUPPLIER = 'store_supplier',
@@ -21,8 +19,6 @@ export enum ModuleName {
     STORE_EXPORT_MATERIAL_DETAIL = 'store_export_material_detail',
     STORE_CHECK_INVENTORY = 'store_check_inventory',
     STORE_INVENTORY_DETAIL = 'store_inventory_detail',
-    BILLING = 'billing',
-    CLOSING_REVENUE = 'closing_revenue',
     ROLE = 'role',
 }
 
@@ -31,8 +27,6 @@ export enum PermissionResources {
     USER = 'user',
     TABLE_DIAGRAM = 'table_diagram',
     BOOKING = 'booking',
-    MENU_FOOD = 'food',
-    MENU_CATEGORY = 'category',
     STORE_MATERIAL = 'store_material',
     STORE_CONVERT = 'store_convert',
     STORE_SUPPLIER = 'store_supplier',
@@ -42,8 +36,6 @@ export enum PermissionResources {
     STORE_EXPORT_MATERIAL_DETAIL = 'store_export_material_detail',
     STORE_CHECK_INVENTORY = 'store_check_inventory',
     STORE_INVENTORY_DETAIL = 'store_inventory_detail',
-    BILLING = 'billing',
-    CLOSING_REVENUE = 'closing_revenue',
     ROLE = 'role',
 }
 

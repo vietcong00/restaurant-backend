@@ -2,6 +2,6 @@ import { BookingStatus } from './../../booking.constant';
 export interface BookingDetailResponseDto {
     id: number;
     nameCustomer: string;
-    idTable?: number;
+    tableId?: number;
     status?: BookingStatus;
 }

@@ -3,17 +3,17 @@
         "status": "Status",
         "nameCustomer": "Name Customer",
         "phone": "Phone",
-        "idTable": "id Table",
+        "tableId": "id Table",
         "arrivalTime": "arrival Time",
         "numberPeople": "number People"            
     },
     "message": {
         "error": {
-            "itemNotExist": "Billing does not exist",
+            "itemNotExist": "Booking does not exist",
             "payer.waitingForApproval": "Payer is waiting for approval"
         },
         "success": {
-            "delete": "The billing has been deleted successfully"
+            "delete": "The booking has been deleted successfully"
         }
         
     }    

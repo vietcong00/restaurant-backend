@@ -10,7 +10,7 @@ import {
     MIN_PAGE_SIZE,
     ORDER_DIRECTION,
 } from 'src/common/constants';
-import { BillingOrderBy } from '../../tableDiagram.constant';
+import { TableOrderBy } from '../../tableDiagram.constant';
 
 export const TableListQueryStringSchema = Joi.object().keys({
     page: Joi.number().max(MAX_PAGE).allow(null, '').min(MIN_PAGE).optional(),
@@ -23,7 +23,7 @@ export const TableListQueryStringSchema = Joi.object().keys({
     orderBy: Joi.string()
         .allow(null, '')
         .optional()
-        .valid(...Object.values(BillingOrderBy)),
+        .valid(...Object.values(TableOrderBy)),
     orderDirection: Joi.string()
         .allow(null, '')
         .valid(...Object.values(ORDER_DIRECTION))
@@ -32,8 +32,7 @@ export const TableListQueryStringSchema = Joi.object().keys({
         .items(Joi.date().format(DATE_TIME_FORMAT.YYYY_MM_DD_HYPHEN))
         .optional()
         .length(2)
-        .allow('')
-        .label('billing.fields.payDate'),
+        .allow(''),
 });
 
 export interface TableListQueryStringDto {

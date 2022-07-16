@@ -1,4 +1,4 @@
-import { AcceptStatus } from '../../src/modules/export-material/export_material.constant';
+import { AcceptStatus } from '../../src/modules/common/common.constant';
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 import { TABLE_NAME } from '../constant';
 

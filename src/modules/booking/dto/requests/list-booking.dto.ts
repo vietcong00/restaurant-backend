@@ -12,7 +12,7 @@ import {
     MIN_PAGE_SIZE,
     ORDER_DIRECTION,
 } from 'src/common/constants';
-import { BillingOrderBy } from '../../booking.constant';
+import { BookingOrderBy } from '../../booking.constant';
 
 export const BookingListQueryStringSchema = Joi.object().keys({
     page: Joi.number().max(MAX_PAGE).allow(null, '').min(MIN_PAGE).optional(),
@@ -25,7 +25,7 @@ export const BookingListQueryStringSchema = Joi.object().keys({
     orderBy: Joi.string()
         .allow(null, '')
         .optional()
-        .valid(...Object.values(BillingOrderBy)),
+        .valid(...Object.values(BookingOrderBy)),
     orderDirection: Joi.string()
         .allow(null, '')
         .valid(...Object.values(ORDER_DIRECTION))
@@ -40,9 +40,8 @@ export const BookingListQueryStringSchema = Joi.object().keys({
         )
         .optional()
         .length(2)
-        .allow('')
-        .label('billing.fields.payDate'),
-    idTable: Joi.number().allow(null, '').optional(),
+        .allow(''),
+    tableId: Joi.number().allow(null, '').optional(),
 });
 
 export interface BookingListQueryStringDto {
@@ -53,5 +52,5 @@ export interface BookingListQueryStringDto {
     orderDirection?: ORDER_DIRECTION;
     status?: BookingStatus[];
     arrivalTimeRange?: Date;
-    idTable?: number;
+    tableId?: number;
 }

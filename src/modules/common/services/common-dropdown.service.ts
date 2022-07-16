@@ -1,12 +1,10 @@
 import { Supplier } from './../../supplier/entity/supplier.entity';
-import { Category } from '../../category/entity/category.entity';
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectEntityManager } from '@nestjs/typeorm';
 import { Brackets, EntityManager, In, Not } from 'typeorm';
 import { DEFAULT_LIMIT_FOR_DROPDOWN } from '../../../common/constants';
 import {
     ListBankDropdown,
-    ListCategoryDropdown,
     ListMaterialDropdown,
     ListProvinceDropdown,
     ListRoleDropdown,
@@ -35,12 +33,6 @@ const materialDropdownListAttributes: (keyof Material)[] = [
     'material',
     'unit',
     'quantity',
-];
-const categoryDropdownListAttributes: (keyof Category)[] = [
-    'id',
-    'name',
-    'priority',
-    'note',
 ];
 
 const supplierDropdownListAttributes: (keyof Supplier)[] = ['id', 'name'];
@@ -190,31 +182,6 @@ export class CommonDropdownService {
                 Material,
                 {
                     select: materialDropdownListAttributes,
-                    where: (queryBuilder) =>
-                        this.generateQueryBuilder(queryBuilder, {
-                            page,
-                            limit,
-                            status: [],
-                            withDeleted: false,
-                        }),
-                },
-            );
-            return {
-                totalItems,
-                items,
-            };
-        } catch (error) {
-            throw new InternalServerErrorException();
-        }
-    }
-
-    async getListCategory(query: QueryDropdown): Promise<ListCategoryDropdown> {
-        try {
-            const { page, limit } = query;
-            const [items, totalItems] = await this.dbManager.findAndCount(
-                Category,
-                {
-                    select: categoryDropdownListAttributes,
                     where: (queryBuilder) =>
                         this.generateQueryBuilder(queryBuilder, {
                             page,

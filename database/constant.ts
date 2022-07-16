@@ -16,7 +16,6 @@ export enum TABLE_NAME {
     Roles = 'roles',
     Provinces = 'provinces',
     UserLogging = 'user_logging',
-    Billings = 'billings',
     User_Tokens = 'user_tokens',
     UserPosition = 'user_position',
     Bank = 'banks',
@@ -25,8 +24,6 @@ export enum TABLE_NAME {
     PermissionResources = 'permission_resources',
     RolePermissions = 'role_permissions',
     Bookings = 'bookings',
-    Categories = 'categories',
-    Foods = 'foods',
     TablesRestaurants = 'tables_restaurants',
     Suppliers = 'suppliers',
     Materials = 'materials',
@@ -37,7 +34,6 @@ export enum TABLE_NAME {
     ExportMaterialOrders = 'export_material_orders',
     CheckInventories = 'check_inventories',
     CheckInventoryDetails = 'check_inventory_details',
-    ClosingRevenue = 'closing_revenue',
 }
 
 export const commonColumns: TableColumnOptions[] = [
@@ -97,8 +93,6 @@ export enum DBPermissionResources {
     USER = 'user',
     TABLE_DIAGRAM = 'table_diagram',
     BOOKING = 'booking',
-    MENU_FOOD = 'food',
-    MENU_CATEGORY = 'category',
     STORE_MATERIAL = 'store_material',
     STORE_CONVERT = 'store_convert',
     STORE_SUPPLIER = 'store_supplier',
@@ -108,7 +102,5 @@ export enum DBPermissionResources {
     STORE_EXPORT_MATERIAL_DETAIL = 'store_export_material_detail',
     STORE_CHECK_INVENTORY = 'store_check_inventory',
     STORE_INVENTORY_DETAIL = 'store_inventory_detail',
-    BILLING = 'billing',
-    CLOSING_REVENUE = 'closing_revenue',
     ROLE = 'role',
 }

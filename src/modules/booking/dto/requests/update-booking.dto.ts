@@ -12,7 +12,7 @@ export interface UpdateBookingDto {
     status: BookingStatus;
     nameCustomer: string;
     phone: string;
-    idTable: number;
+    tableId: number;
     numberPeople: number;
     arrivalTime: Date;
     updatedBy: number;

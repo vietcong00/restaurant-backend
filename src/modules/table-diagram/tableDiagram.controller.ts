@@ -86,7 +86,7 @@ export class TableDiagramController {
             const table = await this.tableDiagramService.getTableDetail(id);
             if (!table) {
                 const message = await this.i18n.translate(
-                    'billing.message.error.itemNotExist',
+                    'table.message.error.itemNotExist',
                 );
                 return new ErrorResponse(
                     HttpStatus.ITEM_NOT_FOUND,
@@ -111,6 +111,7 @@ export class TableDiagramController {
     ) {
         try {
             body.createdBy = req.loginUser.id;
+            body.status = TableStatus.READY;
             const newTable = await this.tableDiagramService.createTable(body);
             await this.databaseService.recordUserLogging({
                 userId: req.loginUser?.id,
@@ -141,7 +142,7 @@ export class TableDiagramController {
             );
             if (!oldTable) {
                 const message = await this.i18n.translate(
-                    'billing.message.error.itemNotExist',
+                    'table.message.error.itemNotExist',
                 );
                 return new ErrorResponse(
                     HttpStatus.ITEM_NOT_FOUND,
@@ -183,7 +184,7 @@ export class TableDiagramController {
             );
             if (!oldTable) {
                 const message = await this.i18n.translate(
-                    'billing.message.error.itemNotExist',
+                    'table.message.error.itemNotExist',
                 );
                 return new ErrorResponse(
                     HttpStatus.ITEM_NOT_FOUND,
@@ -194,7 +195,7 @@ export class TableDiagramController {
 
             await this.tableDiagramService.deleteTable(id, req.loginUser.id);
             const message = await this.i18n.translate(
-                'billing.message.success.delete',
+                'table.message.success.delete',
             );
 
             await this.databaseService.recordUserLogging({

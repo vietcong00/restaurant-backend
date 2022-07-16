@@ -13,10 +13,6 @@ export class ListMaterialDropdown extends CommonListResponse<MaterialDropdownRes
     items: MaterialDropdownResponseDto[];
 }
 
-export class ListCategoryDropdown extends CommonListResponse<CategoryDropdownResponseDto> {
-    items: CategoryDropdownResponseDto[];
-}
-
 export class ListSupplierDropdown extends CommonListResponse<SupplierDropdownResponseDto> {
     items: SupplierDropdownResponseDto[];
 }
@@ -37,13 +33,6 @@ export class MaterialDropdownResponseDto {
     material: string;
     unit: string;
     quantity: number;
-}
-
-export class CategoryDropdownResponseDto {
-    id: number;
-    name: string;
-    priority: number;
-    note: string;
 }
 
 export class SupplierDropdownResponseDto {

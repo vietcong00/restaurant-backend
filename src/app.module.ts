@@ -13,9 +13,7 @@ import { ConfigModule } from '@nestjs/config';
 import { GlobalDataService } from './modules/common/services/global-data.service';
 import { BookingModule } from './modules/booking/booking.module';
 import { TableDiagramModule } from './modules/table-diagram/tableDiagram.module';
-import { CategoryModule } from './modules/category/category.module';
 import { SupplierModule } from './modules/supplier/supplier.module';
-import { FoodModule } from './modules/food/food.module';
 import { MaterialModule } from './modules/material/material.module';
 import { ConvertMaterialModule } from './modules/convert-material/convert_material.module';
 import { ImportMaterialModule } from './modules/import-material/import_material.module';
@@ -24,7 +22,6 @@ import { ImportMaterialOrderModule } from './modules/import-material-order/impor
 import { ExportMaterialOrderModule } from './modules/export-material-order/export_material_order.module';
 import { CheckInventoryModule } from './modules/check-inventory/check_inventory.module';
 import { CheckInventoryDetailModule } from './modules/check-inventory-detail/check_inventory_detail.module';
-import { ClosingRevenueModule } from './modules/closing-revenue/closing_revenue.module';
 
 @Module({
     imports: [
@@ -43,7 +40,6 @@ import { ClosingRevenueModule } from './modules/closing-revenue/closing_revenue.
         SetttingModule,
         BookingModule,
         TableDiagramModule,
-        CategoryModule,
         SupplierModule,
         MaterialModule,
         ConvertMaterialModule,
@@ -53,8 +49,6 @@ import { ClosingRevenueModule } from './modules/closing-revenue/closing_revenue.
         ExportMaterialOrderModule,
         CheckInventoryModule,
         CheckInventoryDetailModule,
-        FoodModule,
-        ClosingRevenueModule,
     ],
     controllers: [AppController],
     providers: [GlobalDataService],

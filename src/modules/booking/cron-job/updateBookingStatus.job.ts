@@ -44,13 +44,13 @@ export class UpdateBookingStatusJob {
                 .execute();
 
             const bookingWaiting = await manager.find(Booking, {
-                select: ['idTable'],
+                select: ['tableId'],
                 where: {
                     status: BookingStatus.WAITING,
                 },
             });
             this.idTableWaitings = bookingWaiting.map((element) => {
-                return element.idTable;
+                return element.tableId;
             });
             if (this.idTableWaitings?.length) {
                 await manager

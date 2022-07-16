@@ -6,7 +6,7 @@ export interface CreateBookingDto {
     status: BookingStatus;
     nameCustomer: string;
     phone: string;
-    idTable: number;
+    tableId: number;
     numberPeople: number;
     arrivalTime: Date;
     createdBy: number;

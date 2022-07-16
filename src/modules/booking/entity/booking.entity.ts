@@ -19,7 +19,7 @@ export class Booking extends BaseEntity {
     phone: string;
 
     @Column({ nullable: true })
-    idTable: number;
+    tableId: number;
 
     @Column({ nullable: true })
     numberPeople: number;
@@ -29,7 +29,7 @@ export class Booking extends BaseEntity {
 
     @ManyToOne(() => TablesRestaurant)
     @JoinColumn({
-        name: 'idTable',
+        name: 'tableId',
     })
     tablesRestaurant: TablesRestaurant;
 }

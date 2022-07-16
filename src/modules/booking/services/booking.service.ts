@@ -19,7 +19,7 @@ const bookingAttributes: (keyof Booking)[] = [
     'nameCustomer',
     'phone',
     'arrivalTime',
-    'idTable',
+    'tableId',
     'numberPeople',
     'tablesRestaurant',
     'createdAt',
@@ -30,7 +30,7 @@ export class BookingService {
 
     generateQueryBuilder(
         queryBuilder,
-        { keyword, status, arrivalTimeRange, idTable },
+        { keyword, status, arrivalTimeRange, tableId },
     ) {
         if (keyword) {
             const likeKeyword = `%${keyword}%`;
@@ -54,9 +54,9 @@ export class BookingService {
             });
         }
 
-        if (idTable) {
+        if (tableId) {
             queryBuilder.andWhere({
-                idTable: idTable,
+                tableId: tableId,
             });
         }
 
@@ -85,7 +85,7 @@ export class BookingService {
                 orderDirection = DEFAULT_ORDER_DIRECTION,
                 status = [],
                 arrivalTimeRange = [],
-                idTable = null,
+                tableId = null,
             } = query;
 
             // Pagination
@@ -102,7 +102,7 @@ export class BookingService {
                             keyword,
                             status,
                             arrivalTimeRange,
-                            idTable,
+                            tableId,
                         }),
                     order: {
                         [orderBy]: orderDirection.toUpperCase(),
@@ -133,10 +133,10 @@ export class BookingService {
         }
     }
 
-    async checkExistBookingWaitingInTable(idTable: number): Promise<boolean> {
+    async checkExistBookingWaitingInTable(tableId: number): Promise<boolean> {
         try {
             const count = await this.dbManager.count(Booking, {
-                where: { idTable, status: BookingStatus.WAITING },
+                where: { tableId, status: BookingStatus.WAITING },
             });
             return count > 0;
         } catch (error) {

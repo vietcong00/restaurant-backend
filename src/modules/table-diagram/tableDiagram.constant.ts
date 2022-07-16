@@ -10,7 +10,7 @@ import {
 
 const Joi = BaseJoi.extend(JoiDate);
 
-export enum BillingOrderBy {
+export enum TableOrderBy {
     NAME = 'name',
     CREATED_AT = 'createdAt',
 }
@@ -22,7 +22,7 @@ export enum TableStatus {
 }
 
 export const TableSchema = {
-    name: Joi.string().max(INPUT_TEXT_MAX_LENGTH).label('billing.fields.name'),
+    name: Joi.string().max(INPUT_TEXT_MAX_LENGTH),
     status: Joi.string()
         .allow(null)
         .valid(TableStatus.BOOKED, TableStatus.USED, TableStatus.READY)
@@ -30,7 +30,7 @@ export const TableSchema = {
         .label('booking.fields.status'),
     nameCustomer: Joi.string()
         .max(INPUT_TEXT_MAX_LENGTH)
-        .label('billing.fields.name'),
+        .label('booking.fields.name'),
     phone: Joi.string()
         .allow(null)
         .regex(RegExp(REGEX.PHONE_NUMBER))

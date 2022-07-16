@@ -34,7 +34,7 @@ export class Booking1632891593029 implements MigrationInterface {
                         isNullable: true,
                     },
                     {
-                        name: 'idTable',
+                        name: 'tableId',
                         type: 'int',
                         isNullable: true,
                     },

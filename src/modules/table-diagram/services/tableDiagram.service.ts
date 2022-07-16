@@ -137,29 +137,29 @@ export class TableDiagramService {
     }
 
     async updateStatusTableRelativeBooking(
-        idTable: number,
+        tableId: number,
         bookingStatus: BookingStatus,
         isExistBookingWaiting: boolean,
     ) {
         try {
             if (bookingStatus === BookingStatus.CANCELED) {
                 if (isExistBookingWaiting) {
-                    this.updateTable(idTable, {
+                    await this.updateTable(tableId, {
                         status: TableStatus.BOOKED,
                     });
                 } else {
-                    this.updateTable(idTable, {
+                    await this.updateTable(tableId, {
                         status: TableStatus.READY,
                     });
                 }
             } else if (bookingStatus === BookingStatus.DONE) {
-                this.updateTable(idTable, {
+                await this.updateTable(tableId, {
                     status: TableStatus.USED,
                 });
             } else if (bookingStatus === BookingStatus.WAITING) {
-                const table = await this.getTableDetail(idTable);
+                const table = await this.getTableDetail(tableId);
                 if (table?.status === TableStatus.READY) {
-                    this.updateTable(idTable, {
+                    await this.updateTable(tableId, {
                         status: TableStatus.BOOKED,
                     });
                 }
