@@ -48,6 +48,23 @@ export const UpdateImportMaterialOrderSchema = Joi.object().keys({
     ...ImportMaterialOrderSchema,
 });
 
+export const ImportMaterialDetailExcelSchema = Joi.object().keys({
+    importMaterialDetailExcels: Joi.array().items(
+        Joi.object().keys({
+            index: Joi.number().min(0).max(MAX_INTEGER).required(),
+            materialId: Joi.number().max(MAX_INTEGER).optional().required(),
+            material: Joi.string()
+                .max(INPUT_TEXT_MAX_LENGTH)
+                .optional()
+                .required(),
+            unit: Joi.string().max(INPUT_TEXT_MAX_LENGTH).optional().required(),
+            pricePerUnit: Joi.number().max(MAX_INTEGER).optional().required(),
+            quantity: Joi.number().max(MAX_INTEGER).optional().required(),
+            note: Joi.string().max(INPUT_TEXT_MAX_LENGTH).optional().required(),
+        }),
+    ),
+});
+
 export class ImportMaterialOrderQueryStringDto {
     page?: number;
     limit?: number;
@@ -83,4 +100,21 @@ export class ImportMaterialOrderDetailResponseDto {
     createdBy?: number;
     createdAt?: Date;
     updatedAt?: Date;
+}
+
+export class ImportMaterialDetailExcelDto {
+    id: number;
+    importMaterialId: number;
+    materialId: number;
+    material: string;
+    unit: string;
+    pricePerUnit: number;
+    quantity: number;
+    note: string;
+    status?: AcceptStatus;
+    index: number;
+}
+
+export class ImportMaterialDetailExcelsDto {
+    importMaterialDetailExcelDto: ImportMaterialDetailExcelDto[];
 }

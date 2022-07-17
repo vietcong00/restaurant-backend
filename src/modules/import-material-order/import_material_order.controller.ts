@@ -1,3 +1,4 @@
+import { ImportMaterial } from './../import-material/entity/import_material.entity';
 import {
     Body,
     Controller,
@@ -33,6 +34,9 @@ import { TrimObjectPipe } from 'src/common/pipes/trim.object.pipe';
 import {
     CreateImportMaterialOrderDto,
     CreateImportMaterialOrderSchema,
+    ImportMaterialDetailExcelDto,
+    ImportMaterialDetailExcelSchema,
+    ImportMaterialDetailExcelsDto,
     ImportMaterialOrderListQueryStringSchema,
     ImportMaterialOrderQueryStringDto,
     UpdateImportMaterialOrderDto,
@@ -42,12 +46,15 @@ import { ImportMaterialOrder } from './entity/import_material_order.entity';
 import { ImportMaterialOrderService } from './service/import_material_order.service';
 import { AcceptStatus } from '../common/common.constant';
 import { ImportMaterialService } from '../import-material/service/import_material.service';
+import { uniq } from 'lodash';
+import { ImportMaterialDetailExcelService } from './service/import_material_order.import_excel.service';
 
 @Controller('import-material-order')
 @UseGuards(JwtGuard, AuthorizationGuard)
 export class ImportMaterialOrderController {
     constructor(
         private readonly importMaterialOrderService: ImportMaterialOrderService,
+        private readonly importMaterialDetailExcelService: ImportMaterialDetailExcelService,
         private readonly importMaterialService: ImportMaterialService,
         private readonly i18n: I18nRequestScopeService,
         private readonly databaseService: DatabaseService,
@@ -182,6 +189,70 @@ export class ImportMaterialOrderController {
                 newValue: { ...newValue },
             });
             return new SuccessResponse(material);
+        } catch (error) {
+            throw new InternalServerErrorException(error);
+        }
+    }
+
+    @Post('bulk-create')
+    @Permissions([
+        `${PermissionResources.STORE_IMPORT_MATERIAL}_${PermissionActions.CREATE}`,
+    ])
+    async importMaterialDetailExcel(
+        @Request() req,
+        @Body(
+            new TrimObjectPipe(),
+            new JoiValidationPipe(ImportMaterialDetailExcelSchema),
+        )
+        body: ImportMaterialDetailExcelsDto,
+    ) {
+        try {
+            const materialList =
+                await this.importMaterialDetailExcelService.getMaterials(
+                    uniq(
+                        body.importMaterialDetailExcelDto.map(
+                            (item) => item.material,
+                        ),
+                    ),
+                );
+
+            const validationResults = await Promise.all(
+                body.importMaterialDetailExcelDto.map((item) =>
+                    this.importMaterialDetailExcelService.validateImportMaterialDetailExcel(
+                        item,
+                        materialList,
+                    ),
+                ),
+            );
+
+            let importAssetResults;
+            validationResults.forEach((validationResult) => {
+                importAssetResults = {
+                    ...importAssetResults,
+                    [validationResult.index]: validationResult.validationResult,
+                };
+            });
+
+            if (
+                !validationResults.some(
+                    (validationResult) =>
+                        !validationResult.validationResult.isValid,
+                )
+            ) {
+                this.importMaterialDetailExcelService.bulkCreateImportMaterialOrders(
+                    body.importMaterialDetailExcelDto.map((item) => {
+                        return this.importMaterialDetailExcelService.mapImportMaterialDetailExcel(
+                            item,
+                            materialList,
+                            req.loginUser?.id,
+                        );
+                    }),
+                );
+            }
+
+            return new SuccessResponse({
+                results: importAssetResults,
+            });
         } catch (error) {
             throw new InternalServerErrorException(error);
         }
