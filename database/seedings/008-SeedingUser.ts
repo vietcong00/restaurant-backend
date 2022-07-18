@@ -20,8 +20,8 @@ export class SeedingUser1720963593400 implements MigrationInterface {
                 .getRepository('roles')
                 .findOne({ where: { name: UserRole.SUPERVISOR } })) as Role;
             const userDefault = {
-                fullName: 'TTLab Admin',
-                email: 'tims@gmail.com',
+                fullName: 'Uyen_quanli',
+                email: 'uyen.nguyen.test@gmail.com',
                 password: bcrypt.hashSync('ttlab@1234', bcrypt.genSaltSync(10)),
                 status: UserStatus.ACTIVE,
                 roleId: role.id,
@@ -31,14 +31,14 @@ export class SeedingUser1720963593400 implements MigrationInterface {
                 {
                     ...userDefault,
                     id: 1,
-                    fullName: 'TTLab Admin',
-                    email: 'tientung1412@gmail.com',
+                    fullName: 'Uyen_thungan',
+                    email: 'uyen.tes1@gmail.com',
                 },
                 {
                     ...userDefault,
                     id: 2,
-                    fullName: 'tung nt',
-                    email: 'tungnt@gmail.com',
+                    fullName: 'Uyen_quanli',
+                    email: 'uyen.nguyen.test@gmail.com',
                     isSuperAdmin: 1,
                 },
             ];
@@ -52,7 +52,7 @@ export class SeedingUser1720963593400 implements MigrationInterface {
     public async down(queryRunner: QueryRunner): Promise<void> {
         if (this.needToSeed()) {
             await queryRunner.manager.getRepository(this.tableName).delete({
-                email: In(['tims@gmail.com', 'ledth@gmail.com']),
+                email: In(['uyenntt@tokyotechlab.com']),
             });
         }
     }
